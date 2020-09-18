@@ -13,7 +13,9 @@ const Product = mongoose.model('Product', ProductSchema);
 module.exports = {
 	getProducts: async () => {
 		try {
-			return await Product.find({});
+            const products = await Product.find({}).lean();
+            console.log(products);
+            return products;
 		} catch (error) {
 			return(error);
 		}
