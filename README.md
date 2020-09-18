@@ -46,6 +46,23 @@ Administratörer har en extra view där hen kan administrera produkter.
 | /api/orders | GET | Returnerar en lista på samtliga ordrar för admins, och ägda orders för inloggad användare. |
 | /api/orders | POST | Skapar en ny order, se order-modell. |
 
+### Auth End-Point Response
+```js
+{
+  token: "TJOSSAN",
+  user: {
+    email: "kdajsdaskj",
+    name: "fkdjsofksj",
+    role: "customer",
+    adress: {
+      street: "omg",
+      zip: "shiet",
+      city: "Smygehuk"
+    }
+  }
+}
+```
+
 ### Datamodeller
 
 #### Product
@@ -106,4 +123,3 @@ Administratörer har en extra view där hen kan administrera produkter.
 
 ## Redovisning
 Fredag 25/9 knyter vi ihop hela kursen med redovisningar.
-
