@@ -14,7 +14,6 @@ module.exports = {
 	getProducts: async () => {
 		try {
             const products = await Product.find({}).lean();
-            console.log(products);
             return products;
 		} catch (error) {
 			return(error);
@@ -41,15 +40,16 @@ module.exports = {
 	},
 
 
-	updateProduct: async (title, price, shortDesc, longDesc, imgFile) => {
+	updateProduct: async (id, title, price, shortDesc, longDesc, imgFile) => {
 		try {
-			return await Product.findByIdAndUpdate(
+		    const product = await Product.findByIdAndUpdate(
 				id, 
 				{
                     title, price, shortDesc, longDesc, imgFile
 				}, 
 				{new: true}
-			);
+            );
+            return product;
 		} catch (error) {
 			return (error);
 		}
@@ -57,7 +57,8 @@ module.exports = {
 
 	deleteProduct: async (id) => {
 		try {
-			return await (await Product.deleteOne({_id: id})).deletedCount;
+            const product = await Product.deleteOne({_id: id})
+            return product.deletedCount;
 		} catch (error) {
 			return (error);
 		}
