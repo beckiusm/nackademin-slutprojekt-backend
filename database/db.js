@@ -8,7 +8,7 @@ switch (process.env.ENVIRONMENT) {
 case 'development':
 case 'test':
 	const {MongoMemoryServer} = require('mongodb-memory-server');
-	mongoDatabase = new MongoMemoryServer();
+	mongoDatabase = new MongoMemoryServer({binary: {version: '4.4.1'}});
 	break;
 case 'staging':
 	mongoDatabase = {
