@@ -19,7 +19,8 @@ module.exports = {
         } catch (error) {
             return error;
         }
-    },
+    }
+    /*,
     signInUser: async function(req, res) {
         try {
             let userObject = {
@@ -32,4 +33,5 @@ module.exports = {
             return error;
         }
     }
+    */
 }
