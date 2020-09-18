@@ -4,17 +4,17 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const usersSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    name: { type: String, required: true },
-    role: { type: String, default: 'customer', required: true },
+    email: { type: String },
+    password: { type: String },
+    name: { type: String },
+    role: { type: String, default: 'customer'},
     address: {
-        street: { type: String, required: true },
-        zip: { type: String, required: true },
-        city: { type: String, required: true }
+        street: { type: String },
+        zip: { type: String },
+        city: { type: String }
     },
-    orderHistory: { type: Array, default: Array }
-});
+    orderHistory: { type: Array, default: [] }
+}, { versionKey: false });
 
 const Users = mongoose.model('Users', usersSchema);
 
@@ -23,7 +23,15 @@ module.exports = {
         try {
             bcryptjs.hashSync(userObject.password, 10);
             let newUser = await Users.create(userObject);
-            return newUser;
+            return newUser._doc;
+        } catch (error) {
+            return error;
+        }
+    },
+    async clearDatabase() {
+        try {
+            let clearDB = await Users.deleteMany({});
+            return clearDB.deletedCount;
         } catch (error) {
             return error;
         }
