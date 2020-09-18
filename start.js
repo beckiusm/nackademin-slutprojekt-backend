@@ -1,3 +1,6 @@
 const app = require('./app')
+const db = require('./database/db');
 
-app.listen(process.env.PORT || 5000, () => console.log("It's running birch!"))
+db.connect().then( () => 
+	app.listen(port, () => console.log(`Running app on port ${port}`))
+);
