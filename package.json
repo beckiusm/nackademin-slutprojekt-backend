@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon start.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env ENVIRONMENT=test mocha --recursive --timeout 99999"
   },
   "config": {
     "mongodbMemoryServer": {
