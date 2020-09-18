@@ -4,20 +4,20 @@ module.exports = {
     createNewUser: async function(req, res) {
         try {
             let userObject = {
-                username: req.body.email,
+                email: req.body.email,
                 password: req.body.password,
                 name: req.body.name,
                 role: req.body.role,
                 address: {
-                    street: req.body.street,
-                    zip: req.body.zip,
-                    city: req.body.city                    
+                    street: req.body.address.street,
+                    zip: req.body.address.zip,
+                    city: req.body.address.city                    
                 }
             }
             let createUser = await usersModel.createNewUser(userObject);
-            return createUser;
+            return res.status(201).json(createUser);
         } catch (error) {
-            return error;
+            return res.status(500).json(error);
         }
     }
     /*,
