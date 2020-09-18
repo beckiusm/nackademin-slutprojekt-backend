@@ -5,7 +5,14 @@ module.exports = {
         try {
             let userObject = {
                 username: req.body.email,
-                password: req.body.password
+                password: req.body.password,
+                name: req.body.name,
+                role: req.body.role,
+                address: {
+                    street: req.body.street,
+                    zip: req.body.zip,
+                    city: req.body.city                    
+                }
             }
             let createUser = await usersModel.createNewUser(userObject);
             return createUser;
