@@ -20,6 +20,16 @@ async function getOrders(req, res) {
     }
 }
 
+//clear all orders when testing
+async function clearOrders(req, res) {
+    try {
+        const clear = await ordersModel.clearOrders();
+        res.status(200).json(clear)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
 module.exports = {
-    createOrder, getOrders
+    createOrder, getOrders, clearOrders
 }

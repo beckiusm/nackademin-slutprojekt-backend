@@ -39,7 +39,18 @@ async function getOrders() { //här behöver vi lägga till en paramater, såsom
     }
 }
 
+//clear all orders when testing
+async function clearOrders() {
+    try {
+        const clear = await Order.deleteMany({});
+        return clear
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
 module.exports = {
     createOrder,
-    getOrders
+    getOrders,
+    clearOrders
 }
