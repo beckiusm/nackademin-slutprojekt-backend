@@ -4,7 +4,7 @@
   "description": "## Arbetssätt Git Flow Agilt och Trello",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env ENVIRONMENT=test && mocha -b --recursive",
+    "test": "cross-env ENVIRONMENT=test && mocha --recursive",
     "start": "nodemon start.js"
   },
   "config": {

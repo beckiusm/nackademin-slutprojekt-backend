@@ -12,7 +12,7 @@ const Order = mongoose.model('Order', orderSchema)
 
 //create an order
 async function createOrder(items) {
-    console.log(items)
+    // console.log(items)
     try {
         let orderValue = 0
         items.map(item => orderValue += +item.price)

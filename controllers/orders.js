@@ -6,6 +6,7 @@ async function createOrder(req, res) {
         const order = await ordersModel.createOrder(req.body);
         res.status(201).json(order);
     } catch (error) {
+        // console.log("ERROR: ", error);
         res.status(500).json(error)
     }
 }
