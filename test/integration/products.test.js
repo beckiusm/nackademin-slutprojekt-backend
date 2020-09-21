@@ -56,7 +56,7 @@ describe('product integration test', () => {
 			.then((res) => {
 				res.should.have.status(200);
 				res.should.be.json;
-				res.body.product.should.have.keys(['title', 'price', 'shortDesc', 'longDesc', 'imgFile']);
+				res.body.product.should.have.keys(['_id', 'title', 'price', 'shortDesc', 'longDesc', 'imgFile']);
 			});
 	});
 	it('should delete product', async function () {
