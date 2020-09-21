@@ -33,7 +33,7 @@ describe('Users model', function() {
 
         // Act
         let createUser = await usersModel.createNewUser(userObject);
-
+        console.log(createUser);
         // Assert
         createUser.should.be.an('object');
         createUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
