@@ -6,6 +6,8 @@ const { expect, request } = chai
 chai.should()
 const ordersModel = require('../../models/orders')
 const database = require('../../database/db')
+const usersModel = require('../../models/users')
+const helper = require('../helper')
 
 describe("Integration test: For testing if API is RESTful", () => {
     before( async () => {
@@ -18,6 +20,13 @@ describe("Integration test: For testing if API is RESTful", () => {
 
     beforeEach(async function() {
         await ordersModel.clearOrders()
+        await usersModel.clearDatabase()
+        
+        const user = await helper.generateTestUser()
+        const token = await helper.generateToken()
+  
+        this.currentTest.token = token
+        this.currentTest.user = user
     });
 
     it('Should create an order with a post request', function() {
@@ -105,14 +114,14 @@ describe("Integration test: For testing if API is RESTful", () => {
         
         const resOrder1 = await ordersModel.createOrder(order1)
         const resOrder2 = await ordersModel.createOrder(order2)
-        
         const res = await request(app)
         .get('/api/orders/')
         .set('Content-Type', 'application/json')
-        // // .set("Authorization", "Bearer " + this.test.token)
+        .set("Authorization", "Bearer " + this.test.token)
         // console.log("RES: ", res.body);
         .then((res) => {
             console.log("ITEMS: ", res.body[1]);
+            console.log(res.body)
             res.body[0].items.should.deep.equal(
                 order1
             )
