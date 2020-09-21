@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
+// const moment = require('moment')
 
 const orderSchema = new mongoose.Schema({
     timeStamp: Date, 
     status: String,
     items: Array,
     orderValue: Number
-})
+}, {versionKey: false})
 
 const Order = mongoose.model('Order', orderSchema)
 

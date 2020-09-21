@@ -70,6 +70,7 @@ describe("Integration test: For testing if API is RESTful", () => {
             {
                 title: 'Gretas Fury',
                 price: 999,
+                category: "board",
                 shortDesc: 'Unisex',
                 longDesc: 'Skate ipsum dolor sit amet...',
                 imgFile: 'skateboard-greta.png'
@@ -77,19 +78,20 @@ describe("Integration test: For testing if API is RESTful", () => {
             {
                 title : "Swag",
                 price : 799,
-                shortDesc : "Unisex",
                 category : "board",
+                shortDesc : "Unisex",
                 longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
                 imgFile : "skateboard-generic.png"
             }
         ]
         const order2 = [
             {
-                title : "Wave",
-                price : 249,
-                shortDesc : "Medium",
+                title : "Rocket",
+                price : 299,
+                category : "wheels",
+                shortDesc : "Hard",
                 longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-wave.png"
+                imgFile : "wheel-rocket.png"
             },
             {
                 title : "Rocket",
@@ -101,17 +103,22 @@ describe("Integration test: For testing if API is RESTful", () => {
             }
         ]
         
-        await ordersModel.createOrder(order1)
-        await ordersModel.createOrder(order2)
+        const resOrder1 = await ordersModel.createOrder(order1)
+        const resOrder2 = await ordersModel.createOrder(order2)
         
         const res = await request(app)
         .get('/api/orders/')
         .set('Content-Type', 'application/json')
-        // .set("Authorization", "Bearer " + this.test.token)
-        console.log("RES: ", res.body);
-        expect(res.body).to.deep.include.members({
-            order1,
-            order2
+        // // .set("Authorization", "Bearer " + this.test.token)
+        // console.log("RES: ", res.body);
+        .then((res) => {
+            console.log("ITEMS: ", res.body[1]);
+            res.body[0].items.should.deep.equal(
+                order1
+            )
+            res.body[1].items.should.deep.equal(
+                order2,
+            )
         })
     })     
 })
