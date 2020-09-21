@@ -43,4 +43,29 @@ describe('Users model', function() {
         createUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
         createUser.address.should.have.keys(['street', 'zip', 'city']);
     });
+
+
+    it('find a user and return a signed token', async function() {
+        const userFields = {
+            email: 'Email@email.com',
+            password: '123',
+            name: 'Test Smith',
+            address: {
+                street: 'test street 52',
+                zip: '123456',
+                city: 'Testhattan'
+            }
+        }
+        await usersModel.createNewUser(userFields);
+
+        const loginAttempt = {
+            email: 'Email@email.com',
+            password: '123',
+        }
+        const authUser = await usersModel.authUser(loginAttempt)
+
+        authUser.should.be.an('object')
+        authUser.token.should.be.a('string')
+        authUser.user.should.be.an('object')
+    })
 });

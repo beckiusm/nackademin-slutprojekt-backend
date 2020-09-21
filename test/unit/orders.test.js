@@ -3,7 +3,11 @@ chai.should()
 const { expect } = chai
 
 const ordersModel = require("../../models/orders")
+const usersModel = require('../../models/users')
 const database = require('../../database/db')
+const permissions = require('../../middleware/permissions')
+const auth = require("../../middleware/auth")
+const helper = require('../helper')
 
 describe("Unit test: ordersmodel", () => {
     before( async () => {
@@ -16,6 +20,13 @@ describe("Unit test: ordersmodel", () => {
     
     beforeEach(async function() {
       await ordersModel.clearOrders()
+      await usersModel.clearDatabase()
+      
+      const orders = await helper.generateTestOrders()
+      const user = await helper.generateTestUser(orders)
+
+      this.currentTest.user = user
+      this.currentTest.orders = orders
     })
     
     it("Should create an order", async function() {
@@ -94,13 +105,15 @@ describe("Unit test: ordersmodel", () => {
                 imgFile : "wheel-rocket.png"
             }
         ]
-        await ordersModel.createOrder(items1)
-        await ordersModel.createOrder(items2)
+        const order1 = await ordersModel.createOrder(items1)
+        const order2 = await ordersModel.createOrder(items2)
         const orderValue1 = 1798
         const orderValue2 = 548
 
+        this.test.user.orderHistory.push(order1._id)
+        this.test.user.orderHistory.push(order2._id)
+
         const resAllOrders = await ordersModel.getOrders()
-        console.log("All orders: ", resAllOrders)
 
         expect(
             resAllOrders[0].items[0].title,
@@ -118,5 +131,11 @@ describe("Unit test: ordersmodel", () => {
             items2[1].title,
             orderValue2,
         )
+    })
+
+    it('should map authorised orders, role == admin', async function() {
+        const authOrders = permissions.mapAuthorizedOrders(this.test.user, this.test.orders)
+
+        authOrders.should.be.an('array').with.length(2)
     })
 })

@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const orderController = require('../controllers/orders.js')
+const auth = require('../middleware/auth')
 
 //create an order
 router.post('/', orderController.createOrder)
 
 //get orders
-router.get('/', orderController.getOrders)
+router.get('/', auth.user, orderController.getOrders)
 
 module.exports = router

@@ -29,6 +29,21 @@ module.exports = {
             return error;
         }
     },
+    async authUser(user) {
+        const email = user.email
+        const registeredUser = await Users.findOne({email}).lean()
+        
+        const success = await bcryptjs.compare(user.password, registeredUser.password)
+        if(success) {
+            const token = jwt.sign(registeredUser, process.env.SECRET)
+            return {
+                token: token,
+                user: registeredUser
+            }
+        }
+
+        return {message: 'Incorrect password, please try again'};
+    },
     async clearDatabase() {
         try {
             let clearDB = await Users.deleteMany({});
@@ -37,19 +52,4 @@ module.exports = {
             return error;
         }
     }
-    /*,
-    async signInUser(userObject) {
-        try {
-            let findUser = await Users.find({email: userObject.email});
-            if (bcryptjs.compareSync(userObject.password, findUser.password)) {
-                const token = jwt.sign( { user: { email: findUser.email, name: findUser.name, role: findUser.role, address: findUser.address } }, process.env.SECRET );
-                return token;
-            } else {
-                return {message: 'Incorrect password, please try again'};
-            }
-        } catch (error) {
-            return error;
-        }
-    }
-    */
 }

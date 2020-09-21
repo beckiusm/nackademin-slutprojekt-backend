@@ -19,6 +19,19 @@ module.exports = {
         } catch (error) {
             return res.status(500).json(error);
         }
+    },
+    authUser: async function(req, res) {
+        try {
+            const fields = {
+                email: req.body.email,
+                password: req.body.password
+            }
+            res.json(await usersModel.authUser(fields)).status(200)
+        } catch (error) {
+            return res.sendstatus(400)
+        }
+
+        return res.status(200)
     }
     /*,
     signInUser: async function(req, res) {
