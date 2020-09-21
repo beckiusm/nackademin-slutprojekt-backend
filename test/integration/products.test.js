@@ -49,7 +49,6 @@ describe('product integration test', () => {
 	it('should update product', async function () {
 		const product = await productModel.createProduct(this.test.ptitle, this.test.price, this.test.shortDesc, this.test.longDesc, this.test.imgFile);
         const fields = {title: 'Alex Fury', price: 9399, shortDesc: 'Inte Unisex', longDesc: 'Skate nånting nånting..', imgFile: 'skateboard-alex.png'};
-        console.log(product);
 		await request(app)
 			.patch(`/api/products/${product._id}`)
 			.set('Content-Type', 'application/json')
