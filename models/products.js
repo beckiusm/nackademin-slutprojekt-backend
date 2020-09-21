@@ -48,7 +48,7 @@ module.exports = {
                     title, price, shortDesc, longDesc, imgFile
 				}, 
 				{new: true}
-            );
+			);
             return product;
 		} catch (error) {
 			return (error);

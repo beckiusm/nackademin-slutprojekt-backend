@@ -37,7 +37,7 @@ exports.updateProduct = async (req, res) => {
 		res.json(
 			{
 				message: `Updated ${product} products with id ${id}.`,
-				product: { title, done, updated: date }
+				product: { title, price, shortDesc, longDesc, imgFile}
 			}).status(200);
 	} catch (error) {
 		res.json({ error: error.message }).status(400);
