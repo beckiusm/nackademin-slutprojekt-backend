@@ -4,8 +4,8 @@
   "description": "## Arbetssätt Git Flow Agilt och Trello",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env ENVIRONMENT=test && mocha --recursive",
-    "start": "nodemon start.js"
+    "start": "nodemon start.js",
+    "test": "cross-env ENVIRONMENT=test mocha --recursive --timeout 99999"
   },
   "config": {
     "mongodbMemoryServer": {
