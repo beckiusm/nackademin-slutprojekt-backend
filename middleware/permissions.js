@@ -14,8 +14,8 @@ function canDeleteProduct(user) {
 
 function mapAuthorizedOrders(user, orders) {
     if(user.role === ROLE.ADMIN) return orders
-    console.log(user.orderHistory, 'orderHistory')
-    const authOrders = orders.filter(order => order._id === user.orderHistory.find(id => id === order._id))
+    
+    const authOrders = orders.filter(order => order._id == user.orderHistory.find(id => id == order._id))
     return authOrders
 }
 

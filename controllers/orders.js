@@ -1,5 +1,6 @@
 const ordersModel = require('../models/orders.js')
-const permissions = require('../middleware/permissions')
+const permissions = require('../middleware/permissions');
+const auth = require('../middleware/auth.js');
 
 //create an order
 async function createOrder(req, res) {
@@ -16,8 +17,6 @@ async function createOrder(req, res) {
 async function getOrders(req, res) {
     try {
         const orders = await ordersModel.getOrders();
-        console.log(orders)
-        console.log(req.user, 'req.user')
         const authOrders = permissions.mapAuthorizedOrders(req.user, orders)
         res.status(200).json(authOrders)
     } catch (error) {
