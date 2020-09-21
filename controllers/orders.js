@@ -4,7 +4,7 @@ const permissions = require('../middleware/permissions')
 //create an order
 async function createOrder(req, res) {
     try {
-        const order = await ordersModel.createOrder(req.body);
+        const order = await ordersModel.createOrder(req.user._id, req.body);
         res.status(201).json(order);
     } catch (error) {
         // console.log("ERROR: ", error);
@@ -15,9 +15,7 @@ async function createOrder(req, res) {
 //get all orders
 async function getOrders(req, res) {
     try {
-        const orders = await ordersModel.getOrders();
-        console.log(orders)
-        console.log(req.user, 'req.user')
+        const orders = await ordersModel.getOrders(req.user._id);
         const authOrders = permissions.mapAuthorizedOrders(req.user, orders)
         res.status(200).json(authOrders)
     } catch (error) {

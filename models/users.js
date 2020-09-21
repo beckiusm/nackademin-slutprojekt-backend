@@ -44,6 +44,31 @@ module.exports = {
 
         return {message: 'Incorrect password, please try again'};
     },
+
+    async updateUser (id, orders) {
+        try {
+            const user = await Users.findByIdAndUpdate(
+                id, 
+                {
+                    $push: { orderHistory: orders }
+                }
+            );
+            return user;
+        } catch (error) {
+            return (error);
+
+        }
+    },
+
+    async getUser (id) {
+        try {
+            const user = await Users.find({_id: id});
+            return user;
+        } catch (error) {
+            return error
+        }
+    },
+
     async clearDatabase() {
         try {
             let clearDB = await Users.deleteMany({});

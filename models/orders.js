@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
 // const moment = require('moment')
+const usersModel = require('./users')
 
 const orderSchema = new mongoose.Schema({
     timeStamp: Date, 
@@ -12,7 +13,7 @@ const orderSchema = new mongoose.Schema({
 const Order = mongoose.model('Order', orderSchema)
 
 //create an order
-async function createOrder(items) {
+async function createOrder(id, items) {
     // console.log(items)
     try {
         let orderValue = 0
@@ -24,19 +25,20 @@ async function createOrder(items) {
             items: items,
             orderValue: orderValue
         })
+        usersModel.updateUser(id, newOrder);
         return newOrder._doc
     } catch (error) {
-        res.status(500).json(error)
+        return error
     }
 }
 
 //get all orders that an user has created
-async function getOrders() { //här behöver vi lägga till en paramater, såsom id
+async function getOrders(id) { //här behöver vi lägga till en paramater, såsom id
     try {
-        const orderResponse = await Order.find({}) //här behöver vi lägga till _id: id
+        const orderResponse = await usersModel.getUser(id) //här behöver vi lägga till _id: id
         return orderResponse
     } catch (error) {
-        res.status(500).json(error)
+        return error
     }
 }
 

@@ -29,7 +29,7 @@ describe("Integration test: For testing if API is RESTful", () => {
         this.currentTest.user = user
     });
 
-    it('Should create an order with a post request', function() {
+    it('Should create an order with a post request', async function() {
         const items = [
             {
                 title: 'Gretas Fury',
@@ -58,9 +58,10 @@ describe("Integration test: For testing if API is RESTful", () => {
         const orderValue = 2497
         // await ordersModel.createOrder(items)
 
-        request(app)
+        await request(app)
         .post('/api/orders/')
         .set('Content-Type', 'application/json')
+        .set("Authorization", `Bearer ${this.test.token}`)
         .send(items)
         .then((res) => {
             // console.log("BODY: ", res.body.items)
@@ -112,21 +113,19 @@ describe("Integration test: For testing if API is RESTful", () => {
             }
         ]
         
-        const resOrder1 = await ordersModel.createOrder(order1)
-        const resOrder2 = await ordersModel.createOrder(order2)
+        const resOrder1 = await ordersModel.createOrder(this.test.user._id, order1)
+        const resOrder2 = await ordersModel.createOrder(this.test.user._id, order2)
         const res = await request(app)
-        .get('/api/orders/')
+        .get(`/api/orders/`)
         .set('Content-Type', 'application/json')
-        .set("Authorization", "Bearer " + this.test.token)
-        // console.log("RES: ", res.body);
+        .set("Authorization", `Bearer ${this.test.token}`)
+            
         .then((res) => {
-            console.log("ITEMS: ", res.body[1]);
-            console.log(res.body)
-            res.body[0].items.should.deep.equal(
+            res.body[0].orderHistory[0].items.should.deep.equal(
                 order1
             )
-            res.body[1].items.should.deep.equal(
-                order2,
+            res.body[0].orderHistory[1].items.should.deep.equal(
+                order2
             )
         })
     })     
