@@ -8,10 +8,10 @@ switch (process.env.ENVIRONMENT) {
 case 'staging':
 case 'development':
     mongoDatabase = {
-		getUri: async () => 
-			`${db}`
+        getUri: async () => 
+        `${db}`
 	};
-	break;
+    break;
 case 'test':
 	const {MongoMemoryServer} = require('mongodb-memory-server');
 	mongoDatabase = new MongoMemoryServer({binary: {version: '4.4.1'}});
@@ -32,7 +32,7 @@ async function connect(){
 
 async function disconnect(){
 	await mongoose.disconnect();
-	if(process.env.ENVIRONMENT == 'test' || process.env.ENVIRONMENT == 'development'){
+	if(process.env.ENVIRONMENT == 'test'){
 		await mongoDatabase.stop();
 	}
 }
