@@ -39,4 +39,25 @@ describe('Users model', function() {
         createUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
         createUser.address.should.have.keys(['street', 'zip', 'city']);
     });
+
+
+    it('find a user and return user doc', async function() {
+        const userFields = {
+            email: 'Email@email.com',
+            password: '123',
+            name: 'Test Smith',
+            address: {
+                street: 'test street 52',
+                zip: '123456',
+                city: 'Testhattan'
+            }
+        }
+
+        const user = await usersModel.createNewUser(userFields);
+        const authUser = await usersModel.authUser(user)
+
+        authUser.should.be.an('object')
+        authUser.should.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ])
+        authUser.address.should.have.keys(['street', 'zip', 'city']);
+    })
 });
