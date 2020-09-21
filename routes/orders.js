@@ -8,7 +8,4 @@ router.post('/', orderController.createOrder)
 //get orders
 router.get('/', orderController.getOrders)
 
-//clear orders when testing
-router.delete('/', orderController.clearOrders)
-
 module.exports = router
