@@ -54,6 +54,7 @@ describe('Users model', function() {
         }
 
         const user = await usersModel.createNewUser(userFields);
+        console.log(user, 'testuser')
         const authUser = await usersModel.authUser(user)
 
         authUser.should.be.an('object')

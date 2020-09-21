@@ -28,6 +28,20 @@ module.exports = {
             return error;
         }
     },
+    async authUser(user) {
+        console.log(user.email)
+        const email = user.email
+        const registeredUser = await Users.findOne({email}).lean()
+        
+        const success = await bcryptjs.compare(user.password, registeredUser.password)
+
+        if(success) {
+            const token = jwt.sign(registeredUser, secret)
+            return token
+        }
+
+        return {message: 'Incorrect password, please try again'};
+    },
     async clearDatabase() {
         try {
             let clearDB = await Users.deleteMany({});

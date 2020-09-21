@@ -19,7 +19,7 @@ module.exports = {
         } catch (error) {
             return res.status(500).json(error);
         }
-    }
+    },
     /*,
     signInUser: async function(req, res) {
         try {
