@@ -41,7 +41,7 @@ describe('Users model', function() {
     });
 
 
-    it('find a user and return user doc', async function() {
+    it('find a user and return a signed token', async function() {
         const userFields = {
             email: 'Email@email.com',
             password: '123',
@@ -52,13 +52,14 @@ describe('Users model', function() {
                 city: 'Testhattan'
             }
         }
-
-        const user = await usersModel.createNewUser(userFields);
-        console.log(user, 'testuser')
-        const authUser = await usersModel.authUser(user)
+        const loginAttempt = {
+            email: 'Email@email.com',
+            password: '123',
+        }
+        await usersModel.createNewUser(userFields);
+        const authUser = await usersModel.authUser(loginAttempt)
 
         authUser.should.be.an('object')
-        authUser.should.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ])
-        authUser.address.should.have.keys(['street', 'zip', 'city']);
+        authUser.token.should.be.a('string')
     })
 });

@@ -21,7 +21,8 @@ const Users = mongoose.model('Users', usersSchema);
 module.exports = {
     async createNewUser(userObject) {
         try {
-            bcryptjs.hashSync(userObject.password, 10);
+            let hashPassword = bcryptjs.hashSync(userObject.password, 10);
+            userObject.password = hashPassword;
             let newUser = await Users.create(userObject);
             return newUser._doc;
         } catch (error) {
@@ -29,15 +30,13 @@ module.exports = {
         }
     },
     async authUser(user) {
-        console.log(user.email)
         const email = user.email
         const registeredUser = await Users.findOne({email}).lean()
         
         const success = await bcryptjs.compare(user.password, registeredUser.password)
-
         if(success) {
-            const token = jwt.sign(registeredUser, secret)
-            return token
+            const token = jwt.sign(registeredUser, process.env.SECRET)
+            return {token: token}
         }
 
         return {message: 'Incorrect password, please try again'};
