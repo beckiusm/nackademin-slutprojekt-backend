@@ -1,5 +1,6 @@
-const Database = require('../../database/db.js')
-const usersModel = require('../../models/users.js')
+const Database = require('../../database/db.js');
+const usersModel = require('../../models/users.js');
+const bcryptjs = require('bcryptjs');
 const chai = require('chai');
 const { expect } = require('chai');
 
@@ -12,6 +13,7 @@ describe('Users model', function() {
     
     beforeEach('Clear users database', async function() {
         await usersModel.clearDatabase();
+        this.currentTest.password = '123';
     });
 
     after('Disconnect from the database', async function() {
@@ -20,9 +22,9 @@ describe('Users model', function() {
 
     it('Should create a user object', async function() {
         // Arrange
-        let userObject = {
+        const userObject = {
             email: 'Email@email.com',
-            password: '123',
+            password: this.test.password,
             name: 'Test Smith',
             address: {
                 street: 'test street 52',
@@ -32,9 +34,11 @@ describe('Users model', function() {
         }
 
         // Act
-        let createUser = await usersModel.createNewUser(userObject);
-        console.log(createUser);
+        const createUser = await usersModel.createNewUser(userObject);
+        let passwordComparison = bcryptjs.compareSync(this.test.password, createUser.password);
+
         // Assert
+        passwordComparison.should.be.equal(true);
         createUser.should.be.an('object');
         createUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
         createUser.address.should.have.keys(['street', 'zip', 'city']);

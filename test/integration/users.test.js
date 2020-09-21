@@ -1,6 +1,7 @@
 const app = require('../../app.js');
 const Database = require('../../database/db.js');
 const usersModel = require('../../models/users.js');
+const bcryptjs = require('bcryptjs');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -16,6 +17,7 @@ describe('Users HTTP requests', function(){
     
     beforeEach('Clear users database', async function() {
         await usersModel.clearDatabase();
+        this.currentTest.password = '123';
     });
 
     after('Disconnect from the database', async function() {
@@ -26,7 +28,7 @@ describe('Users HTTP requests', function(){
         // Arrange
         let userObject = {
             email: 'Email@email.com',
-            password: '123',
+            password: this.test.password,
             name: 'Test Smith',
             address: {
                 street: 'test street 52',
@@ -40,8 +42,9 @@ describe('Users HTTP requests', function(){
         .post('/api/users/register/')
         .set('Content-Type', 'application/json')
         .send(userObject);
-
+        
         // Assert
+        (bcryptjs.compareSync(this.test.password, response.body.password)).should.equal(true);
         response.should.have.status(201);
         response.body.should.have.keys(['email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
         response.body.address.should.have.keys(['street', 'zip', 'city']);
