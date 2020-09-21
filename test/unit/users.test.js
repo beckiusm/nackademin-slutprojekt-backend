@@ -52,14 +52,16 @@ describe('Users model', function() {
                 city: 'Testhattan'
             }
         }
+        await usersModel.createNewUser(userFields);
+
         const loginAttempt = {
             email: 'Email@email.com',
             password: '123',
         }
-        await usersModel.createNewUser(userFields);
         const authUser = await usersModel.authUser(loginAttempt)
 
         authUser.should.be.an('object')
         authUser.token.should.be.a('string')
+        authUser.user.should.be.an('object')
     })
 });

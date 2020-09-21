@@ -36,7 +36,10 @@ module.exports = {
         const success = await bcryptjs.compare(user.password, registeredUser.password)
         if(success) {
             const token = jwt.sign(registeredUser, process.env.SECRET)
-            return {token: token}
+            return {
+                token: token,
+                user: registeredUser
+            }
         }
 
         return {message: 'Incorrect password, please try again'};

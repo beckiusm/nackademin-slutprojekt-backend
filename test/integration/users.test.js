@@ -59,11 +59,12 @@ describe('Users HTTP requests', function(){
                 city: 'Testhattan'
             }
         }
+        await usersModel.createNewUser(userFields);
+
         const loginAttempt = {
             email: 'Email@email.com',
             password: '123',
         }
-        await usersModel.createNewUser(userFields);
 
         await chai.request(app)
         .post('/api/users/auth/')
@@ -72,7 +73,9 @@ describe('Users HTTP requests', function(){
         .then(function (res) {
             expect(res).to.have.status(200)
             expect(res).to.be.json
-            expect(res.body).to.have.keys(['email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ])
+            expect(res.body).to.have.keys(['token', 'user'])
+            expect(res.body.token).to.be.a('string')
+            expect(res.body.user).to.be.an('object')
         })
     })
 
