@@ -49,19 +49,4 @@ module.exports = {
             return error;
         }
     }
-    /*,
-    async signInUser(userObject) {
-        try {
-            let findUser = await Users.find({email: userObject.email});
-            if (bcryptjs.compareSync(userObject.password, findUser.password)) {
-                const token = jwt.sign( { user: { email: findUser.email, name: findUser.name, role: findUser.role, address: findUser.address } }, process.env.SECRET );
-                return token;
-            } else {
-                return {message: 'Incorrect password, please try again'};
-            }
-        } catch (error) {
-            return error;
-        }
-    }
-    */
 }

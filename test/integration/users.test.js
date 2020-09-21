@@ -47,4 +47,33 @@ describe('Users HTTP requests', function(){
         response.body.address.should.have.keys(['street', 'zip', 'city']);
     });
 
+
+    it('should send a POST request with an login attempt and send back an object with token and user', async function() {
+        const userFields = {
+            email: 'Email@email.com',
+            password: '123',
+            name: 'Test Smith',
+            address: {
+                street: 'test street 52',
+                zip: '123456',
+                city: 'Testhattan'
+            }
+        }
+        const loginAttempt = {
+            email: 'Email@email.com',
+            password: '123',
+        }
+        await usersModel.createNewUser(userFields);
+
+        await chai.request(app)
+        .post('/api/users/auth/')
+        .set('Content-Type', 'application/json')
+        .send(loginAttempt)
+        .then(function (res) {
+            expect(res).to.have.status(200)
+            expect(res).to.be.json
+            expect(res.body).to.have.keys(['email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ])
+        })
+    })
+
 });
