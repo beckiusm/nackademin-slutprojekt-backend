@@ -39,7 +39,7 @@ describe('Users HTTP requests', function(){
 
         // Act
         const response = await chai.request(app)
-        .post('/api/users/register/')
+        .post('/api/register/')
         .set('Content-Type', 'application/json')
         .send(userObject);
         
@@ -70,7 +70,7 @@ describe('Users HTTP requests', function(){
         }
 
         await chai.request(app)
-        .post('/api/users/auth/')
+        .post('/api/auth/')
         .set('Content-Type', 'application/json')
         .send(loginAttempt)
         .then(function (res) {
