@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/products');
-// const auth = require('../middleware/auth.js');
+const auth = require('../middleware/auth.js');
 
 // get list
 router.get('/:id', productController.getProduct);
@@ -10,7 +10,7 @@ router.get('/:id', productController.getProduct);
 router.get('/', productController.getProducts);
 
 // create list
-router.post('/', productController.createProduct);
+router.post('/', auth.user, productController.createProduct);
 
 // update list
 router.patch('/:id', productController.updateProduct);

@@ -32,6 +32,9 @@ module.exports = {
     async authUser(user) {
         const email = user.email
         const registeredUser = await Users.findOne({email}).lean()
+        if (registeredUser == null) {
+            return {message: 'Account does not exist, please try another email'};
+        }
         
         const success = await bcryptjs.compare(user.password, registeredUser.password)
         if(success) {
@@ -40,9 +43,10 @@ module.exports = {
                 token: token,
                 user: registeredUser
             }
+        } else {
+            return {message: 'Incorrect password, please try again'};
         }
 
-        return {message: 'Incorrect password, please try again'};
     },
     async clearDatabase() {
         try {

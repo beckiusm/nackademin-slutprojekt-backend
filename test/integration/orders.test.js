@@ -23,8 +23,8 @@ describe("Integration test: For testing if API is RESTful", () => {
         await usersModel.clearDatabase()
         
         const orders = await helper.generateTestOrders()
-        const user = await helper.generateTestUser(orders)
-        const token = await helper.generateToken()
+        const user = await helper.generateTestCustomer(orders);
+        const token = await helper.generateTokenForCustomer();
   
         this.currentTest.token = token
         this.currentTest.user = user

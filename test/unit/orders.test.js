@@ -23,7 +23,7 @@ describe("Unit test: ordersmodel", () => {
       await usersModel.clearDatabase()
       
       const orders = await helper.generateTestOrders()
-      const user = await helper.generateTestUser(orders)
+      const user = await helper.generateTestCustomer(orders)
 
       this.currentTest.user = user
       this.currentTest.orders = orders
