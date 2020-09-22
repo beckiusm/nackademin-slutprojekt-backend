@@ -102,10 +102,6 @@ async function generateTestItems() {
 module.exports = {
     generateTestUser,
     generateToken,
-<<<<<<< HEAD
-    generateTestOrders
-=======
     generateTestOrders,
     generateTestItems
->>>>>>> newTtest
 }
