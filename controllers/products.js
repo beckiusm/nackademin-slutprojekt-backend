@@ -37,20 +37,24 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
 	const id = req.params.id;
 	const { title, price, shortDesc, longDesc, imgFile } = req.body;
-	try {
-		const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
-		res.json(
-			{
-				message: `Updated product with id ${id}.`,
-				product
-			}).status(200);
-	} catch (error) {
-		res.json({ error: error.message }).status(400);
+	if (permissions.canUpdateProduct(req.user)) {
+		try {
+			const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
+			res.json(
+				{
+					message: `Updated product with id ${id}.`,
+					product
+				}).status(200);
+		} catch (error) {
+			res.json({ error: error.message }).status(400);
+		}
+	} else {
+		res.sendStatus(401);
 	}
 };
 
 exports.deleteProduct = async (req, res) => {
-	// if (req.user.role === 'admin') {
+	 if (permissions.canDeleteProduct(req.user)) {
 		const id = req.params.id;
 		try {
 			const product = await productModel.deleteProduct(id);
@@ -58,8 +62,8 @@ exports.deleteProduct = async (req, res) => {
 		} catch (error) {
 			res.json({ error: error.message }).status(400);
 		}
-	// } else {
-	// 	res.sendStatus(401);
-	// }
+	} else {
+		res.sendStatus(401);
+	}
 };
 

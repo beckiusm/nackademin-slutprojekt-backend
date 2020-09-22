@@ -63,6 +63,7 @@ describe('product integration test', () => {
         const fields = {title: 'Alex Fury', price: 9399, shortDesc: 'Inte Unisex', longDesc: 'Skate nånting nånting..', imgFile: 'skateboard-alex.png'};
 		await request(app)
 			.patch(`/api/products/${product._id}`)
+			.set('Authorization', 'Bearer ' + this.test.token)
 			.set('Content-Type', 'application/json')
 			.send(fields)
 			.then((res) => {
@@ -75,6 +76,7 @@ describe('product integration test', () => {
 		const product = await productModel.createProduct(this.test.ptitle, this.test.price, this.test.shortDesc, this.test.longDesc, this.test.imgFile);
 		await request(app)
 			.delete(`/api/products/${product._id}`)
+			.set('Authorization', 'Bearer ' + this.test.token)
 			.set('Content-Type', 'application/json')
 			.then((res) => {
 				res.should.have.status(200);

@@ -13,9 +13,9 @@ router.get('/', productController.getProducts);
 router.post('/', auth.user, productController.createProduct);
 
 // update list
-router.patch('/:id', productController.updateProduct);
+router.patch('/:id', auth.user, productController.updateProduct);
 
 // delete list
-router.delete('/:id', productController.deleteProduct);
+router.delete('/:id', auth.user, productController.deleteProduct);
 
 module.exports = router;
