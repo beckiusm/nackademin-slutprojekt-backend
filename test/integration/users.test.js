@@ -1,7 +1,6 @@
 const app = require('../../app.js');
 const Database = require('../../database/db.js');
 const usersModel = require('../../models/users.js');
-const bcryptjs = require('bcryptjs');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -44,10 +43,10 @@ describe('Users HTTP requests', function(){
         .send(userObject);
         
         // Assert
-        (bcryptjs.compareSync(this.test.password, response.body.password)).should.equal(true);
         response.should.have.status(201);
-        response.body.should.have.keys(['email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
-        response.body.adress.should.have.keys(['street', 'zip', 'city']);
+        response.body.should.have.keys(['token', 'user']);
+        response.body.user.should.have.keys(['email', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
+        response.body.user.adress.should.have.keys(['zip', 'city', 'street' ]);
     });
 
 

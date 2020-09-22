@@ -39,6 +39,7 @@ module.exports = {
         const success = await bcryptjs.compare(user.password, registeredUser.password)
         if(success) {
             const token = jwt.sign(registeredUser, process.env.SECRET)
+            delete registeredUser.password;
             return {
                 token: token,
                 user: registeredUser
