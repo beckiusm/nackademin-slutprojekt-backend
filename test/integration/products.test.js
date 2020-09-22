@@ -60,11 +60,12 @@ describe('product integration test', () => {
 	});
 	it('should update product', async function () {
 		const product = await productModel.createProduct(this.test.ptitle, this.test.price, this.test.shortDesc, this.test.longDesc, this.test.imgFile);
-        const fields = {title: 'Alex Fury', price: 9399, shortDesc: 'Inte Unisex', longDesc: 'Skate nånting nånting..', imgFile: 'skateboard-alex.png'};
+		const fields = {title: 'Alex Fury', price: 9399, shortDesc: 'Inte Unisex', longDesc: 'Skate nånting nånting..', imgFile: 'skateboard-alex.png'};
 		await request(app)
 			.patch(`/api/products/${product._id}`)
 			.set('Authorization', 'Bearer ' + this.test.token)
 			.set('Content-Type', 'application/json')
+			.set('Authorization', 'Bearer ' + this.test.token)
 			.send(fields)
 			.then((res) => {
 				res.should.have.status(200);
