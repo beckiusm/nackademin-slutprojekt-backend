@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
 const usersModel = require('./users')
+const productsModel = require('./products.js')
 
 const orderSchema = new mongoose.Schema({
     timeStamp: Date, 
@@ -11,9 +12,8 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema)
 
-//create an order
-async function createOrder(id, items) {
-    // console.log(items)
+//create an order for a user
+async function createOrderForAnonymousUser(items) {
     try {
         let orderValue = 0
         items.map(item => orderValue += +item.price)
@@ -24,7 +24,37 @@ async function createOrder(id, items) {
             items: items,
             orderValue: orderValue
         })
-        usersModel.updateUser(id, newOrder);
+        return newOrder._doc
+    } catch (error) {
+        return error
+    }
+}
+
+async function createOrderForCustomer(id, products) {
+    
+    try {
+        let orderValue = 0
+        products.forEach(productId => {
+            let product = await productsModel.getProduct(productId);
+            console.log(product);
+            orderValue += +product.price;
+        });
+        /*
+        await products.map(productId => async function() {
+            console.log("map function");
+            let product = await productsModel.getProduct(productId)._doc;
+            console.log(product);
+            orderValue += +product.price;
+        });
+        */
+        //items.map(item => orderValue += +item.price)
+        const newOrder = await Order.create({
+            timeStamp: Date.now(),
+            status: 'inProcess',
+            items: items,
+            orderValue: orderValue
+        });
+        await usersModel.updateUser(id, newOrder);
         return newOrder._doc
     } catch (error) {
         return error
@@ -61,7 +91,8 @@ async function clearOrders() {
 }
 
 module.exports = {
-    createOrder,
+    createOrderForAnonymousUser,
+    createOrderForCustomer,
     getOrders,
     getOrdersAll,
     clearOrders

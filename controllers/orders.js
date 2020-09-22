@@ -5,10 +5,14 @@ const auth = require('../middleware/auth.js');
 //create an order
 async function createOrder(req, res) {
     try {
-        const order = await ordersModel.createOrder(req.user._id, req.body);
-        res.status(201).json(order);
+        if (!req.user || req.user == undefined) {
+            const order = await ordersModel.createOrderForAnonymousUser(req.body);
+            res.status(201).json(order);
+        } else {
+            const order = await ordersModel.createOrderForCustomer(req.user._id, req.body);
+            res.status(201).json(order);
+        }
     } catch (error) {
-        // console.log("ERROR: ", error);
         res.status(500).json(error)
     }
 }

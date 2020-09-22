@@ -30,21 +30,5 @@ module.exports = {
         } catch (error) {
             res.sendStatus(400)
         }
-
-        res.status(200)
     }
-    /*,
-    signInUser: async function(req, res) {
-        try {
-            let userObject = {
-                username: req.body.email,
-                password: req.body.password
-            };
-            let signInUser = await usersModel.signInUser(userObject);
-            return signInUser;
-        } catch (error) {
-            return error;
-        }
-    }
-    */
 }

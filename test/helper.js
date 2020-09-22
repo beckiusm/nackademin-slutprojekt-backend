@@ -22,7 +22,7 @@ async function generateTokenForAdmin() {
     return authUser.token
 }
 
-async function generateTestOrders(id) {
+async function generateTestOrders(id, typeOfUser = 'anonymous') {
     const items1 = [
         {
             title: 'Gretas Fury',
@@ -59,9 +59,24 @@ async function generateTestOrders(id) {
             imgFile : "wheel-rocket.png"
         }
     ]
+
+    let order1, order2;
+
+    switch (typeOfUser) {
+        case "customer":
+        case "admin":
+            order1 = (await ordersModel.createOrderForCustomer(id, items1)).items
+            order2 = (await ordersModel.createOrderForCustomer(id, items2)).items
+            break;
     
-    const order1 = (await ordersModel.createOrder(id, items1)).items
-    const order2 = (await ordersModel.createOrder(id, items2)).items
+        case "anonymous":
+            order1 = (await ordersModel.createOrderForAnonymousUser(items1)).items
+            order2 = (await ordersModel.createOrderForAnonymousUser(items2)).items
+            break;
+
+        default:
+            break;
+    }
 
     return {order1, order2}
 }
