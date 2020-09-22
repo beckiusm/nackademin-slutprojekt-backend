@@ -30,42 +30,11 @@ describe("Unit test: ordersmodel", () => {
     })
     
     it("Should create an order", async function() {
-        const items = [
-            {
-                title: 'Gretas Fury',
-                price: 999,
-                shortDesc: 'Unisex',
-                longDesc: 'Skate ipsum dolor sit amet...',
-                imgFile: 'skateboard-greta.png'
-            },
-            {
-                title : "Swag",
-                price : 799,
-                shortDesc : "Unisex",
-                category : "board",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "skateboard-generic.png"
-            },
-            {
-                title : "Hoodie",
-                price : 699,
-                shortDesc : "Ash unisex",
-                category : "clothes",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "hoodie-ash.png"
-            }
-        ]
+        const items = await helper.generateTestItems()
         const orderValue = 2497
         const resOrder = await ordersModel.createOrderForCustomer(this.test.user._id, items)
-        expect(
-            resOrder.status, 
-            resOrder.items, 
-            resOrder.orderValue 
-        )
-        .to.be.equal(
-            "inProcess", 
-            items,
-            orderValue
+        JSON.stringify(resOrder.items[0]).should.deep.equal(
+            JSON.stringify(items)
         )
     })
 
@@ -74,21 +43,11 @@ describe("Unit test: ordersmodel", () => {
         const orderValue = 1798
 
         const resAllOrders = await ordersModel.getOrders(this.test.user._id)
-        expect(
-            resAllOrders[0].orderHistory[0].items[0].title,
-            resAllOrders[0].orderHistory[0].items[0].price,
-            resAllOrders[0].orderHistory[0].items[0].shortDesc,
-            resAllOrders[0].orderHistory[0].items[0].longDesc,
-            resAllOrders[0].orderHistory[0].items[0].imgFile,
-            resAllOrders[0].orderHistory[0].orderValue
+        JSON.stringify(resAllOrders[0].orderHistory[0].items[0]).should.deep.equal(
+            JSON.stringify(this.test.orders.order1.items[0])
         )
-        .to.be.equal(
-            items[0].title,
-            items[0].price,
-            items[0].shortDesc,
-            items[0].longDesc,
-            items[0].imgFile,
-            orderValue
+        JSON.stringify(resAllOrders[0].orderHistory[1].items[0]).should.deep.equal(
+            JSON.stringify(this.test.orders.order2.items[0])
         )
     })
 })

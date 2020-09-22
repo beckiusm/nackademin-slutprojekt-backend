@@ -8,6 +8,7 @@ const ordersModel = require('../../models/orders')
 const database = require('../../database/db')
 const usersModel = require('../../models/users')
 const helper = require('../helper')
+const { should } = require('chai')
 
 describe("Integration test: For testing if API is RESTful", () => {
     before( async () => {
@@ -42,12 +43,10 @@ describe("Integration test: For testing if API is RESTful", () => {
         .set("Authorization", `Bearer ${this.test.token}`)
         .send(items)
         .then((res) => {
-            expect(res).to.have.status(201)
-            expect(res.body.items).to.deep.include.members(
-                items
-            )
-            expect(res.body.orderValue).to.be.equal(
-                orderValue
+
+            res.should.have.status(201)
+            JSON.stringify(res.body.items[0]).should.deep.equal(
+                JSON.stringify(items)
             )
         })
     })
@@ -62,11 +61,8 @@ describe("Integration test: For testing if API is RESTful", () => {
         .send(items)
         .then((res) => {
             expect(res).to.have.status(201)
-            expect(res.body.items).to.deep.include.members(
-                items
-            )
-            expect(res.body.orderValue).to.be.equal(
-                orderValue
+            JSON.stringify(res.body.items[0]).should.deep.equal(
+                JSON.stringify(items)
             )
         })
     })
@@ -77,11 +73,11 @@ describe("Integration test: For testing if API is RESTful", () => {
         .set('Content-Type', 'application/json')
         .set("Authorization", `Bearer ${this.test.token}`)
         .then((res) => {
-            res.body[0].orderHistory[0].items.should.deep.equal(
-                this.test.orders.order1
+            JSON.stringify(res.body[0].orderHistory[0].items[0]).should.deep.equal(
+                JSON.stringify(this.test.orders.order1.items[0])
             )
-            res.body[0].orderHistory[1].items.should.deep.equal(
-                this.test.orders.order2
+            JSON.stringify(res.body[0].orderHistory[1].items[0]).should.deep.equal(
+                JSON.stringify(this.test.orders.order2.items[0])
             )
         })
     })     

@@ -87,7 +87,7 @@ describe('Users model', function() {
         // Act
         updatedUser = await usersModel.updateUser(createUser._id, newOrder);
         updatedUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
-        updatedUser.orderHistory[0].items[0].should.deep.equal(newOrder.order1[0])
+        updatedUser.orderHistory[0].items[0].should.deep.equal(newOrder.order1.items[0])
     })
     it('should get a user', async function() {
         const userObject = {

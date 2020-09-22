@@ -13,17 +13,19 @@ const orderSchema = new mongoose.Schema({
 const Order = mongoose.model('Order', orderSchema)
 
 //create an order for a user
-async function createOrderForAnonymousUser(items) {
+async function createOrderForAnonymousUser(products) {
     try {
         let orderValue = 0
-        items.map(item => orderValue += +item.price)
-        
+        for(productId of products.items) {
+            let product = await productsModel.getProduct(productId);
+            orderValue += +product.price;
+        }
         const newOrder = await Order.create({
             timeStamp: Date.now(),
             status: 'inProcess',
-            items: items,
+            items: products,
             orderValue: orderValue
-        })
+        });
         return newOrder._doc
     } catch (error) {
         return error

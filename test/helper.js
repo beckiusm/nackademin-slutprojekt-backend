@@ -1,6 +1,7 @@
 const auth = require('../middleware/auth')
 const usersModel = require('../models/users')
 const ordersModel = require('../models/orders')
+const productModel = require('../models/products')
 
 async function generateTokenForCustomer() {
     const loginAttempt = {
@@ -23,55 +24,35 @@ async function generateTokenForAdmin() {
 }
 
 async function generateTestOrders(id, typeOfUser = 'anonymous') {
-    const items1 = [
-        {
-            title: 'Gretas Fury',
-            price: 999,
-            category: "board",
-            shortDesc: 'Unisex',
-            longDesc: 'Skate ipsum dolor sit amet...',
-            imgFile: 'skateboard-greta.png'
-        },
-        {
-            title : "Swag",
-            price : 799,
-            category : "board",
-            shortDesc : "Unisex",
-            longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-            imgFile : "skateboard-generic.png"
-        }
-    ]
-    const items2 = [
-        {
-            title : "Rocket",
-            price : 299,
-            category : "wheels",
-            shortDesc : "Hard",
-            longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-            imgFile : "wheel-rocket.png"
-        },
-        {
-            title : "Rocket",
-            price : 299,
-            category : "wheels",
-            shortDesc : "Hard",
-            longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-            imgFile : "wheel-rocket.png"
-        }
-    ]
+    const product = {
+        title: 'Gretas Fury',
+        price: 999,
+        shortDesc: 'Unisex',
+        longDesc: 'Skate ipsum dolor sit amet...',
+        imgFile: 'skateboard-greta.png'
+    }
+
+    let productIDs = [];
+
+    for(let i = 0; i < 3; i++) {
+        let newProduct = await productModel.createProduct(product.title, product.price, product.shortDesc, product.longDesc, product.imgFile)
+        productIDs.push(newProduct._id);
+    }
 
     let order1, order2;
+
+    let products = {items: productIDs}
 
     switch (typeOfUser) {
         case "customer":
         case "admin":
-            order1 = (await ordersModel.createOrderForCustomer(id, items1)).items
-            order2 = (await ordersModel.createOrderForCustomer(id, items2)).items
+            order1 = await ordersModel.createOrderForCustomer(id, products)
+            order2 = await ordersModel.createOrderForCustomer(id, products)
             break;
     
         case "anonymous":
-            order1 = (await ordersModel.createOrderForAnonymousUser(items1)).items
-            order2 = (await ordersModel.createOrderForAnonymousUser(items2)).items
+            order1 = await ordersModel.createOrderForAnonymousUser(products)
+            order2 = await ordersModel.createOrderForAnonymousUser(products)
             break;
 
         default:
@@ -112,31 +93,22 @@ async function generateTestAdmin() {
 }
 
 async function generateTestItems() {
-    return items = [
-        {
-            title: 'Gretas Fury',
-            price: 999,
-            shortDesc: 'Unisex',
-            longDesc: 'Skate ipsum dolor sit amet...',
-            imgFile: 'skateboard-greta.png'
-        },
-        {
-            title : "Swag",
-            price : 799,
-            shortDesc : "Unisex",
-            category : "board",
-            longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-            imgFile : "skateboard-generic.png"
-        },
-        {
-            title : "Hoodie76",
-            price : 699,
-            shortDesc : "Ash unisex",
-            category : "clothes",
-            longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-            imgFile : "hoodie-ash.png"
-        }
-    ]
+    const product = {
+        title: 'Gretas Fury',
+        price: 999,
+        shortDesc: 'Unisex',
+        longDesc: 'Skate ipsum dolor sit amet...',
+        imgFile: 'skateboard-greta.png'
+    }
+
+    let productIDs = [];
+
+    for(let i = 0; i < 3; i++) {
+        let newProduct = await productModel.createProduct(product.title, product.price, product.shortDesc, product.longDesc, product.imgFile)
+        productIDs.push(newProduct._id);
+    }
+
+    return {items: productIDs};
 }
 
 module.exports = {
