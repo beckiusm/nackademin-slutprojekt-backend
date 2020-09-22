@@ -125,8 +125,6 @@ async function generateTestItems() {
 }
 
 module.exports = {
-    generateTokenForCustomer,
-    generateTokenForAdmin,
     generateTestOrders,
     generateTestCustomer,
     generateTestAdmin,
