@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
-const orders = require('../controllers/orders')
 require('dotenv').config()
-// const moment = require('moment')
 const usersModel = require('./users')
 
 const orderSchema = new mongoose.Schema({
@@ -65,5 +63,6 @@ async function clearOrders() {
 module.exports = {
     createOrder,
     getOrders,
+    getOrdersAll,
     clearOrders
 }

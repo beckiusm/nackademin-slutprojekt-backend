@@ -24,9 +24,11 @@ describe("Unit test: ordersmodel", () => {
       
       const user = await helper.generateTestUser()
       const token = await helper.generateToken()
+      const orders = await helper.generateTestOrders(user._id)
 
       this.currentTest.token = token
       this.currentTest.user = user
+      this.currentTest.orders = orders
     })
     
     it("Should create an order", async function() {
@@ -70,62 +72,25 @@ describe("Unit test: ordersmodel", () => {
     })
 
     it("Should get all orders", async function() {
-        const items1 = [
-            {
-                title: 'Gretas Fury',
-                price: 999,
-                shortDesc: 'Unisex',
-                longDesc: 'Skate ipsum dolor sit amet...',
-                imgFile: 'skateboard-greta.png'
-            },
-            {
-                title : "Swag",
-                price : 799,
-                shortDesc : "Unisex",
-                category : "board",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "skateboard-generic.png"
-            }
-        ]
-        const items2 = [
-            {
-                title : "Wave",
-                price : 249,
-                shortDesc : "Medium",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-wave.png"
-            },
-            {
-                title : "Rocket",
-                price : 299,
-                category : "wheels",
-                shortDesc : "Hard",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-rocket.png"
-            }
-        ]
-        const order1 = await ordersModel.createOrder(this.test.user._id, items1)
-        const order2 = await ordersModel.createOrder(this.test.user._id, items2)
-        const orderValue1 = 1798
-        const orderValue2 = 548
+        const items = await helper.generateTestItems()
+        const orderValue = 1798
 
         const resAllOrders = await ordersModel.getOrders(this.test.user._id)
-
         expect(
             resAllOrders[0].orderHistory[0].items[0].title,
-            resAllOrders[0].orderHistory[0].items[1].title,
-            resAllOrders[0].orderHistory[0].orderValue,
-            resAllOrders[0].orderHistory[0].items[0].title,
-            resAllOrders[0].orderHistory[0].items[1].title,
-            resAllOrders[0].orderHistory[0].orderValue,
-            )
+            resAllOrders[0].orderHistory[0].items[0].price,
+            resAllOrders[0].orderHistory[0].items[0].shortDesc,
+            resAllOrders[0].orderHistory[0].items[0].longDesc,
+            resAllOrders[0].orderHistory[0].items[0].imgFile,
+            resAllOrders[0].orderHistory[0].orderValue
+        )
         .to.be.equal(
-            items1[0].title,
-            items1[1].title,
-            orderValue1,
-            items2[0].title,
-            items2[1].title,
-            orderValue2,
+            items[0].title,
+            items[0].price,
+            items[0].shortDesc,
+            items[0].longDesc,
+            items[0].imgFile,
+            orderValue
         )
     })
 })

@@ -24,39 +24,17 @@ describe("Integration test: For testing if API is RESTful", () => {
         
         const user = await helper.generateTestUser()
         const token = await helper.generateToken()
+        const orders = await helper.generateTestOrders(user._id)
   
         this.currentTest.token = token
         this.currentTest.user = user
+        this.currentTest.orders = orders
+    
     });
 
     it('Should create an order with a post request', async function() {
-        const items = [
-            {
-                title: 'Gretas Fury',
-                price: 999,
-                shortDesc: 'Unisex',
-                longDesc: 'Skate ipsum dolor sit amet...',
-                imgFile: 'skateboard-greta.png'
-            },
-            {
-                title : "Swag",
-                price : 799,
-                shortDesc : "Unisex",
-                category : "board",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "skateboard-generic.png"
-            },
-            {
-                title : "Hoodie76",
-                price : 699,
-                shortDesc : "Ash unisex",
-                category : "clothes",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "hoodie-ash.png"
-            }
-        ]
+        const items = await helper.generateTestItems()
         const orderValue = 2497
-        // await ordersModel.createOrder(items)
 
         await request(app)
         .post('/api/orders/')
@@ -76,56 +54,16 @@ describe("Integration test: For testing if API is RESTful", () => {
     })
 
     it('Should get all orders with a get request', async function() {
-        const order1 = [
-            {
-                title: 'Gretas Fury',
-                price: 999,
-                category: "board",
-                shortDesc: 'Unisex',
-                longDesc: 'Skate ipsum dolor sit amet...',
-                imgFile: 'skateboard-greta.png'
-            },
-            {
-                title : "Swag",
-                price : 799,
-                category : "board",
-                shortDesc : "Unisex",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "skateboard-generic.png"
-            }
-        ]
-        const order2 = [
-            {
-                title : "Rocket",
-                price : 299,
-                category : "wheels",
-                shortDesc : "Hard",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-rocket.png"
-            },
-            {
-                title : "Rocket",
-                price : 299,
-                category : "wheels",
-                shortDesc : "Hard",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-rocket.png"
-            }
-        ]
-        
-        const resOrder1 = await ordersModel.createOrder(this.test.user._id, order1)
-        const resOrder2 = await ordersModel.createOrder(this.test.user._id, order2)
         const res = await request(app)
         .get(`/api/orders/`)
         .set('Content-Type', 'application/json')
         .set("Authorization", `Bearer ${this.test.token}`)
-            
         .then((res) => {
             res.body[0].orderHistory[0].items.should.deep.equal(
-                order1
+                this.test.orders.order1
             )
             res.body[0].orderHistory[1].items.should.deep.equal(
-                order2
+                this.test.orders.order2
             )
         })
     })     
