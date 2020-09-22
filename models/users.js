@@ -8,7 +8,7 @@ const usersSchema = new mongoose.Schema({
     password: { type: String },
     name: { type: String },
     role: { type: String, default: 'customer'},
-    address: {
+    adress: {
         street: { type: String },
         zip: { type: String },
         city: { type: String }

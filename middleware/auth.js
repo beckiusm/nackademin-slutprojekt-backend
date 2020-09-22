@@ -20,8 +20,8 @@ module.exports = {
         }
     },
     anonymous: (req, res, next) => {
-        if(!req.headers.authorization) {
-            next();
+        if(!req.headers.authorization || req.headers.authorization == undefined || !req.headers.hasOwnProperty('authorization')) {
+            return next();
         }
 
         const token = req.headers.authorization.replace('Bearer ', '')

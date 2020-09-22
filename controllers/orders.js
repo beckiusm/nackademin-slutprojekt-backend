@@ -5,7 +5,7 @@ const auth = require('../middleware/auth.js');
 //create an order
 async function createOrder(req, res) {
     try {
-        if (!req.user) {
+        if (!req.user || req.user == undefined) {
             const order = await ordersModel.createOrderForAnonymousUser(req.body);
             res.status(201).json(order);
         } else {

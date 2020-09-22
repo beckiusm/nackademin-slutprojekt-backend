@@ -8,10 +8,10 @@ module.exports = {
                 password: req.body.password,
                 name: req.body.name,
                 role: req.body.role,
-                address: {
-                    street: req.body.address.street,
-                    zip: req.body.address.zip,
-                    city: req.body.address.city                    
+                adress: {
+                    street: req.body.adress.street,
+                    zip: req.body.adress.zip,
+                    city: req.body.adress.city                    
                 }
             }
             let createUser = await usersModel.createNewUser(userObject);
@@ -30,21 +30,5 @@ module.exports = {
         } catch (error) {
             res.sendStatus(400)
         }
-
-        res.status(200)
     }
-    /*,
-    signInUser: async function(req, res) {
-        try {
-            let userObject = {
-                username: req.body.email,
-                password: req.body.password
-            };
-            let signInUser = await usersModel.signInUser(userObject);
-            return signInUser;
-        } catch (error) {
-            return error;
-        }
-    }
-    */
 }

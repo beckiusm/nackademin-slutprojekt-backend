@@ -23,7 +23,7 @@ describe("Unit test: ordersmodel", () => {
       await usersModel.clearDatabase()
       
       const user = await helper.generateTestCustomer()
-      const orders = await helper.generateTestOrders(user._id)
+      const orders = await helper.generateTestOrders(user._id, 'admin')
 
       this.currentTest.user = user
       this.currentTest.orders = orders
@@ -56,7 +56,7 @@ describe("Unit test: ordersmodel", () => {
             }
         ]
         const orderValue = 2497
-        const resOrder = await ordersModel.createOrder(this.test.user._id, items)
+        const resOrder = await ordersModel.createOrderForCustomer(this.test.user._id, items)
         expect(
             resOrder.status, 
             resOrder.items, 

@@ -23,7 +23,7 @@ describe("Integration test: For testing if API is RESTful", () => {
         await usersModel.clearDatabase()
 
         const user = await helper.generateTestCustomer();
-        const orders = await helper.generateTestOrders(user._id)
+        const orders = await helper.generateTestOrders(user._id, 'customer')
         const token = await helper.generateTokenForCustomer();
   
         this.currentTest.token = token
@@ -32,7 +32,7 @@ describe("Integration test: For testing if API is RESTful", () => {
     
     });
 
-    it('Should create an order with a post request', async function() {
+    it('Should create an order for a user with a token with a post request', async function() {
         const items = await helper.generateTestItems()
         const orderValue = 2497
 
@@ -40,6 +40,25 @@ describe("Integration test: For testing if API is RESTful", () => {
         .post('/api/orders/')
         .set('Content-Type', 'application/json')
         .set("Authorization", `Bearer ${this.test.token}`)
+        .send(items)
+        .then((res) => {
+            expect(res).to.have.status(201)
+            expect(res.body.items).to.deep.include.members(
+                items
+            )
+            expect(res.body.orderValue).to.be.equal(
+                orderValue
+            )
+        })
+    })
+
+    it('Should create an order for a tokenless user with a post request', async function() {
+        const items = await helper.generateTestItems()
+        const orderValue = 2497
+
+        await request(app)
+        .post('/api/orders/')
+        .set('Content-Type', 'application/json')
         .send(items)
         .then((res) => {
             expect(res).to.have.status(201)

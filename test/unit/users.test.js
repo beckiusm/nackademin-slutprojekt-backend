@@ -26,7 +26,7 @@ describe('Users model', function() {
             email: 'Email@email.com',
             password: this.test.password,
             name: 'Test Smith',
-            address: {
+            adress: {
                 street: 'test street 52',
                 zip: '123456',
                 city: 'Testhattan'
@@ -40,8 +40,8 @@ describe('Users model', function() {
         // Assert
         passwordComparison.should.be.equal(true);
         createUser.should.be.an('object');
-        createUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
-        createUser.address.should.have.keys(['street', 'zip', 'city']);
+        createUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
+        createUser.adress.should.have.keys(['street', 'zip', 'city']);
     });
 
 
@@ -50,7 +50,7 @@ describe('Users model', function() {
             email: 'Email@email.com',
             password: '123',
             name: 'Test Smith',
-            address: {
+            adress: {
                 street: 'test street 52',
                 zip: '123456',
                 city: 'Testhattan'
