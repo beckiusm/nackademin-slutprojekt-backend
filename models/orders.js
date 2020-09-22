@@ -11,9 +11,8 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema)
 
-//create an order
-async function createOrder(id, items) {
-    // console.log(items)
+//create an order for a user
+async function createOrderForAnonymousUser(items) {
     try {
         let orderValue = 0
         items.map(item => orderValue += +item.price)
@@ -24,7 +23,24 @@ async function createOrder(id, items) {
             items: items,
             orderValue: orderValue
         })
-        usersModel.updateUser(id, newOrder);
+        return newOrder._doc
+    } catch (error) {
+        return error
+    }
+}
+
+async function createOrderForCustomer(id, items) {
+    try {
+        let orderValue = 0
+        items.map(item => orderValue += +item.price)
+        
+        const newOrder = await Order.create({
+            timeStamp: Date.now(),
+            status: 'inProcess',
+            items: items,
+            orderValue: orderValue
+        });
+        await usersModel.updateUser(id, newOrder);
         return newOrder._doc
     } catch (error) {
         return error
@@ -61,7 +77,8 @@ async function clearOrders() {
 }
 
 module.exports = {
-    createOrder,
+    createOrderForAnonymousUser,
+    createOrderForCustomer,
     getOrders,
     getOrdersAll,
     clearOrders
