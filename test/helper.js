@@ -128,5 +128,7 @@ module.exports = {
     generateTestOrders,
     generateTestCustomer,
     generateTestAdmin,
-    generateTestItems
+    generateTestItems,
+    generateTokenForAdmin,
+    generateTokenForCustomer
 }
