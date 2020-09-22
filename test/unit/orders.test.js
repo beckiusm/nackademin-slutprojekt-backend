@@ -128,48 +128,4 @@ describe("Unit test: ordersmodel", () => {
             orderValue2,
         )
     })
-
-    // it('should map authorised orders, role == customer', async function() {
-    //     const items1 = [
-    //         {
-    //             title: 'Gretas Fury',
-    //             price: 999,
-    //             shortDesc: 'Unisex',
-    //             longDesc: 'Skate ipsum dolor sit amet...',
-    //             imgFile: 'skateboard-greta.png'
-    //         },
-    //         {
-    //             title : "Swag",
-    //             price : 799,
-    //             shortDesc : "Unisex",
-    //             category : "board",
-    //             longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-    //             imgFile : "skateboard-generic.png"
-    //         }
-    //     ]
-    //     const items2 = [
-    //         {
-    //             title : "Wave",
-    //             price : 249,
-    //             shortDesc : "Medium",
-    //             longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-    //             imgFile : "wheel-wave.png"
-    //         },
-    //         {
-    //             title : "Rocket",
-    //             price : 299,
-    //             category : "wheels",
-    //             shortDesc : "Hard",
-    //             longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-    //             imgFile : "wheel-rocket.png"
-    //         }
-    //     ]
-    //     const order1 = await ordersModel.createOrder(items1)
-    //     const order2 = await ordersModel.createOrder(items2)
-    //     this.test.user.orderHistory.push(order1._id)
-
-    //     // const authOrders = permissions.mapAuthorizedOrders(this.test.user, [order1, order2])
-
-    //     authOrders.should.be.an('array').with.length(1)
-    // })
 })
