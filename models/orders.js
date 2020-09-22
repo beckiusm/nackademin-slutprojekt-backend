@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const orders = require('../controllers/orders')
 require('dotenv').config()
 // const moment = require('moment')
 const usersModel = require('./users')
@@ -35,7 +36,16 @@ async function createOrder(id, items) {
 //get all orders that an user has created
 async function getOrders(id) { //här behöver vi lägga till en paramater, såsom id
     try {
-        const orderResponse = await usersModel.getUser(id) //här behöver vi lägga till _id: id
+        const orderResponse = await usersModel.getUserHistory(id) //här behöver vi lägga till _id: id
+        return orderResponse
+    } catch (error) {
+        return error
+    }
+}
+
+async function getOrdersAll() {
+    try {
+        const orderResponse = await Order.find({})
         return orderResponse
     } catch (error) {
         return error
