@@ -71,7 +71,7 @@ async function generateTestCustomer() {
         email: 'Email@email.com',
         password: '123',
         name: 'Test Smith',
-        address: {
+        adress: {
             street: 'test street 52',
             zip: '123456',
             city: 'Testhattan'
@@ -87,7 +87,7 @@ async function generateTestAdmin() {
         password: '123',
         name: 'Kalle',
         role: 'admin',
-        address: {
+        adress: {
             street: 'Nyvägen 123',
             zip: '123456',
             city: 'Nystad'

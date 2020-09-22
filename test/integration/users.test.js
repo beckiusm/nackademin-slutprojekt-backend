@@ -30,7 +30,7 @@ describe('Users HTTP requests', function(){
             email: 'Email@email.com',
             password: this.test.password,
             name: 'Test Smith',
-            address: {
+            adress: {
                 street: 'test street 52',
                 zip: '123456',
                 city: 'Testhattan'
@@ -46,8 +46,8 @@ describe('Users HTTP requests', function(){
         // Assert
         (bcryptjs.compareSync(this.test.password, response.body.password)).should.equal(true);
         response.should.have.status(201);
-        response.body.should.have.keys(['email', 'password', 'role', 'name', 'address', 'orderHistory', '_id' ]);
-        response.body.address.should.have.keys(['street', 'zip', 'city']);
+        response.body.should.have.keys(['email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
+        response.body.adress.should.have.keys(['street', 'zip', 'city']);
     });
 
 
@@ -56,7 +56,7 @@ describe('Users HTTP requests', function(){
             email: 'Email@email.com',
             password: '123',
             name: 'Test Smith',
-            address: {
+            adress: {
                 street: 'test street 52',
                 zip: '123456',
                 city: 'Testhattan'
