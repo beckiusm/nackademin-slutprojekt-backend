@@ -2,9 +2,19 @@ const auth = require('../middleware/auth')
 const usersModel = require('../models/users')
 const ordersModel = require('../models/orders')
 
-async function generateToken() {
+async function generateTokenForCustomer() {
     const loginAttempt = {
         email: 'Email@email.com',
+        password: '123'
+    }
+
+    const authUser = await usersModel.authUser(loginAttempt)
+    return authUser.token
+}
+
+async function generateTokenForAdmin() {
+    const loginAttempt = {
+        email: 'kalle@email.com',
         password: '123'
     }
 
@@ -56,7 +66,7 @@ async function generateTestOrders(id) {
     return {order1, order2}
 }
 
-async function generateTestUser() {
+async function generateTestCustomer() {
     const userFields = {
         email: 'Email@email.com',
         password: '123',
@@ -65,8 +75,23 @@ async function generateTestUser() {
             street: 'test street 52',
             zip: '123456',
             city: 'Testhattan'
-        },
-        orderHistory: orders
+        }
+    }
+    return await usersModel.createNewUser(userFields);
+}
+
+
+async function generateTestAdmin() {
+    const userFields = {
+        email: 'kalle@email.com',
+        password: '123',
+        name: 'Kalle',
+        role: 'admin',
+        address: {
+            street: 'Nyvägen 123',
+            zip: '123456',
+            city: 'Nystad'
+        }
     }
     return await usersModel.createNewUser(userFields);
 }
@@ -100,8 +125,10 @@ async function generateTestItems() {
 }
 
 module.exports = {
-    generateTestUser,
-    generateToken,
     generateTestOrders,
-    generateTestItems
+    generateTestCustomer,
+    generateTestAdmin,
+    generateTestItems,
+    generateTokenForAdmin,
+    generateTokenForCustomer
 }

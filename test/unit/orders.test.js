@@ -22,14 +22,8 @@ describe("Unit test: ordersmodel", () => {
       await ordersModel.clearOrders()
       await usersModel.clearDatabase()
       
-<<<<<<< HEAD
-      const orders = await helper.generateTestOrders()
-      const user = await helper.generateTestUser(orders)
-=======
-      const user = await helper.generateTestUser()
-      const token = await helper.generateToken()
+      const user = await helper.generateTestCustomer()
       const orders = await helper.generateTestOrders(user._id)
->>>>>>> newTtest
 
       this.currentTest.user = user
       this.currentTest.orders = orders
@@ -97,13 +91,4 @@ describe("Unit test: ordersmodel", () => {
             orderValue
         )
     })
-<<<<<<< HEAD
-
-    it('should map authorised orders, role == admin', async function() {
-        const authOrders = permissions.mapAuthorizedOrders(this.test.user, this.test.orders)
-
-        authOrders.should.be.an('array').with.length(2)
-    })
-=======
->>>>>>> newTtest
 })

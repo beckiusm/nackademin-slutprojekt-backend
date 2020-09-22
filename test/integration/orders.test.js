@@ -21,10 +21,10 @@ describe("Integration test: For testing if API is RESTful", () => {
     beforeEach(async function() {
         await ordersModel.clearOrders()
         await usersModel.clearDatabase()
-        
-        const user = await helper.generateTestUser(orders)
-        const token = await helper.generateToken()
+
+        const user = await helper.generateTestCustomer();
         const orders = await helper.generateTestOrders(user._id)
+        const token = await helper.generateTokenForCustomer();
   
         this.currentTest.token = token
         this.currentTest.user = user
@@ -54,15 +54,6 @@ describe("Integration test: For testing if API is RESTful", () => {
 
     it('Should get all orders with a get request', async function() {
         const res = await request(app)
-<<<<<<< HEAD
-        .get('/api/orders/')
-        .set('Authorization', `Bearer ${this.test.token}`)
-        .set('Content-Type', `application/json`)
-        .then((res) => {
-            this.test.orders[0].toString().should.equal(res.body[0]._id)
-            this.test.orders[1].toString().should.equal(res.body[1]._id)
-
-=======
         .get(`/api/orders/`)
         .set('Content-Type', 'application/json')
         .set("Authorization", `Bearer ${this.test.token}`)
@@ -73,7 +64,6 @@ describe("Integration test: For testing if API is RESTful", () => {
             res.body[0].orderHistory[1].items.should.deep.equal(
                 this.test.orders.order2
             )
->>>>>>> newTtest
         })
     })     
 })

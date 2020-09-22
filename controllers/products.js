@@ -1,3 +1,4 @@
+const permissions = require('../middleware/permissions');
 const productModel = require('../models/products');
 
 exports.getProducts = async (req, res) => {
@@ -22,30 +23,38 @@ exports.getProduct = async (req, res) => {
 exports.createProduct = async (req, res) => {
 	const { title, price, shortDesc, longDesc, imgFile } = req.body;
 	try {
-		const product = await productModel.createProduct(title, price, shortDesc, longDesc, imgFile);
-		res.status(201).json(product);
+		if (permissions.canCreateProduct(req.user) ) {
+			const product = await productModel.createProduct(title, price, shortDesc, longDesc, imgFile);
+			res.status(201).json(product);	
+		} else {
+			res.status(403);
+		}
 	} catch (error) {
-		res.json({ error: error.message }).status(400);
+		res.status(400).json({ error: error.message });
 	}
 };
 
 exports.updateProduct = async (req, res) => {
 	const id = req.params.id;
 	const { title, price, shortDesc, longDesc, imgFile } = req.body;
-	try {
-		const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
-		res.json(
-			{
-				message: `Updated product with id ${id}.`,
-				product
-			}).status(200);
-	} catch (error) {
-		res.json({ error: error.message }).status(400);
+	if (permissions.canUpdateProduct(req.user)) {
+		try {
+			const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
+			res.json(
+				{
+					message: `Updated product with id ${id}.`,
+					product
+				}).status(200);
+		} catch (error) {
+			res.json({ error: error.message }).status(400);
+		}
+	} else {
+		res.sendStatus(401);
 	}
 };
 
 exports.deleteProduct = async (req, res) => {
-	// if (req.user.role === 'admin') {
+	 if (permissions.canDeleteProduct(req.user)) {
 		const id = req.params.id;
 		try {
 			const product = await productModel.deleteProduct(id);
@@ -53,8 +62,8 @@ exports.deleteProduct = async (req, res) => {
 		} catch (error) {
 			res.json({ error: error.message }).status(400);
 		}
-	// } else {
-	// 	res.sendStatus(401);
-	// }
+	} else {
+		res.sendStatus(401);
+	}
 };
 
