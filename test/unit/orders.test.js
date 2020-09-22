@@ -22,8 +22,8 @@ describe("Unit test: ordersmodel", () => {
       await ordersModel.clearOrders()
       await usersModel.clearDatabase()
       
-      const orders = await helper.generateTestOrders()
-      const user = await helper.generateTestCustomer(orders)
+      const user = await helper.generateTestCustomer()
+      const orders = await helper.generateTestOrders(user._id)
 
       this.currentTest.user = user
       this.currentTest.orders = orders
@@ -56,8 +56,7 @@ describe("Unit test: ordersmodel", () => {
             }
         ]
         const orderValue = 2497
-        const resOrder = await ordersModel.createOrder(items)
-        
+        const resOrder = await ordersModel.createOrder(this.test.user._id, items)
         expect(
             resOrder.status, 
             resOrder.items, 
@@ -71,71 +70,25 @@ describe("Unit test: ordersmodel", () => {
     })
 
     it("Should get all orders", async function() {
-        const items1 = [
-            {
-                title: 'Gretas Fury',
-                price: 999,
-                shortDesc: 'Unisex',
-                longDesc: 'Skate ipsum dolor sit amet...',
-                imgFile: 'skateboard-greta.png'
-            },
-            {
-                title : "Swag",
-                price : 799,
-                shortDesc : "Unisex",
-                category : "board",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "skateboard-generic.png"
-            }
-        ]
-        const items2 = [
-            {
-                title : "Wave",
-                price : 249,
-                shortDesc : "Medium",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-wave.png"
-            },
-            {
-                title : "Rocket",
-                price : 299,
-                category : "wheels",
-                shortDesc : "Hard",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "wheel-rocket.png"
-            }
-        ]
-        const order1 = await ordersModel.createOrder(items1)
-        const order2 = await ordersModel.createOrder(items2)
-        const orderValue1 = 1798
-        const orderValue2 = 548
+        const items = await helper.generateTestItems()
+        const orderValue = 1798
 
-        this.test.user.orderHistory.push(order1._id)
-        this.test.user.orderHistory.push(order2._id)
-
-        const resAllOrders = await ordersModel.getOrders()
-
+        const resAllOrders = await ordersModel.getOrders(this.test.user._id)
         expect(
-            resAllOrders[0].items[0].title,
-            resAllOrders[0].items[1].title,
-            resAllOrders[0].orderValue,
-            resAllOrders[1].items[0].title,
-            resAllOrders[1].items[1].title,
-            resAllOrders[1].orderValue,
-            )
-        .to.be.equal(
-            items1[0].title,
-            items1[1].title,
-            orderValue1,
-            items2[0].title,
-            items2[1].title,
-            orderValue2,
+            resAllOrders[0].orderHistory[0].items[0].title,
+            resAllOrders[0].orderHistory[0].items[0].price,
+            resAllOrders[0].orderHistory[0].items[0].shortDesc,
+            resAllOrders[0].orderHistory[0].items[0].longDesc,
+            resAllOrders[0].orderHistory[0].items[0].imgFile,
+            resAllOrders[0].orderHistory[0].orderValue
         )
-    })
-
-    it('should map authorised orders, role == admin', async function() {
-        const authOrders = permissions.mapAuthorizedOrders(this.test.user, this.test.orders)
-
-        authOrders.should.be.an('array').with.length(2)
+        .to.be.equal(
+            items[0].title,
+            items[0].price,
+            items[0].shortDesc,
+            items[0].longDesc,
+            items[0].imgFile,
+            orderValue
+        )
     })
 })
