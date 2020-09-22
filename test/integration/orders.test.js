@@ -21,9 +21,9 @@ describe("Integration test: For testing if API is RESTful", () => {
     beforeEach(async function() {
         await ordersModel.clearOrders()
         await usersModel.clearDatabase()
-        
+
+        const user = await helper.generateTestCustomer();
         const orders = await helper.generateTestOrders(user._id)
-        const user = await helper.generateTestCustomer(orders);
         const token = await helper.generateTokenForCustomer();
   
         this.currentTest.token = token

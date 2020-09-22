@@ -66,7 +66,7 @@ async function generateTestOrders(id) {
     return {order1, order2}
 }
 
-async function generateTestCustomer(orders) {
+async function generateTestCustomer() {
     const userFields = {
         email: 'Email@email.com',
         password: '123',
@@ -75,14 +75,13 @@ async function generateTestCustomer(orders) {
             street: 'test street 52',
             zip: '123456',
             city: 'Testhattan'
-        },
-        orderHistory: orders
+        }
     }
     return await usersModel.createNewUser(userFields);
 }
 
 
-async function generateTestAdmin(orders) {
+async function generateTestAdmin() {
     const userFields = {
         email: 'kalle@email.com',
         password: '123',
@@ -92,8 +91,7 @@ async function generateTestAdmin(orders) {
             street: 'Nyvägen 123',
             zip: '123456',
             city: 'Nystad'
-        },
-        orderHistory: orders
+        }
     }
     return await usersModel.createNewUser(userFields);
 }
