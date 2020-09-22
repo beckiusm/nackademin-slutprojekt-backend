@@ -14,8 +14,13 @@ module.exports = {
                     city: req.body.adress.city                    
                 }
             }
-            let createUser = await usersModel.createNewUser(userObject);
-            res.status(201).json(createUser);
+            let loginObject = {
+                email: req.body.email,
+                password: req.body.password
+            }
+            await usersModel.createNewUser(userObject);
+            let userSignIn = await usersModel.authUser(loginObject)
+            res.status(201).json(userSignIn);
         } catch (error) {
             res.status(500).json(error);
         }
