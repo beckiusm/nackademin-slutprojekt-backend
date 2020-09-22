@@ -15,9 +15,9 @@ module.exports = {
                 }
             }
             let createUser = await usersModel.createNewUser(userObject);
-            return res.status(201).json(createUser);
+            res.status(201).json(createUser);
         } catch (error) {
-            return res.status(500).json(error);
+            res.status(500).json(error);
         }
     },
     authUser: async function(req, res) {
@@ -28,10 +28,10 @@ module.exports = {
             }
             res.json(await usersModel.authUser(fields)).status(200)
         } catch (error) {
-            return res.sendstatus(400)
+            res.sendStatus(400)
         }
 
-        return res.status(200)
+        res.status(200)
     }
     /*,
     signInUser: async function(req, res) {

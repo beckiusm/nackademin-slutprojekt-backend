@@ -60,7 +60,6 @@ describe('product integration test', () => {
 	});
 	it('should update product', async function () {
 		const product = await productModel.createProduct(this.test.ptitle, this.test.price, this.test.shortDesc, this.test.longDesc, this.test.imgFile);
-		console.log('Product: ', product)
 		const fields = {title: 'Alex Fury', price: 9399, shortDesc: 'Inte Unisex', longDesc: 'Skate nånting nånting..', imgFile: 'skateboard-alex.png'};
 		await request(app)
 			.patch(`/api/products/${product._id}`)
@@ -69,7 +68,6 @@ describe('product integration test', () => {
 			.set('Authorization', 'Bearer ' + this.test.token)
 			.send(fields)
 			.then((res) => {
-				console.log('RES.BODY.PRODUCT: ', res.body.product)
 				res.should.have.status(200);
 				res.should.be.json;
 				res.body.product.should.have.keys(['_id', 'title', 'price', 'shortDesc', 'longDesc', 'imgFile']);
