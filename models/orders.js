@@ -34,24 +34,14 @@ async function createOrderForCustomer(id, products) {
     
     try {
         let orderValue = 0
-        products.forEach(productId => {
+        for(productId of products.items) {
             let product = await productsModel.getProduct(productId);
-            console.log(product);
             orderValue += +product.price;
-        });
-        /*
-        await products.map(productId => async function() {
-            console.log("map function");
-            let product = await productsModel.getProduct(productId)._doc;
-            console.log(product);
-            orderValue += +product.price;
-        });
-        */
-        //items.map(item => orderValue += +item.price)
+        }
         const newOrder = await Order.create({
             timeStamp: Date.now(),
             status: 'inProcess',
-            items: items,
+            items: products,
             orderValue: orderValue
         });
         await usersModel.updateUser(id, newOrder);
