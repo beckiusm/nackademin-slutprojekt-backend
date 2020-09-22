@@ -48,6 +48,31 @@ module.exports = {
         }
 
     },
+
+    async updateUser (id, orders) {
+        try {
+            const user = await Users.findByIdAndUpdate(
+                id, 
+                {
+                    $push: { orderHistory: orders }
+                }
+            );
+            return user;
+        } catch (error) {
+            return (error);
+
+        }
+    },
+
+    async getUserHistory (id) {
+        try {
+            const user = await Users.find({_id: id});
+            return user;
+        } catch (error) {
+            return error
+        }
+    },
+
     async clearDatabase() {
         try {
             let clearDB = await Users.deleteMany({});

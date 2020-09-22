@@ -21,48 +21,25 @@ describe("Integration test: For testing if API is RESTful", () => {
     beforeEach(async function() {
         await ordersModel.clearOrders()
         await usersModel.clearDatabase()
-        
-        const orders = await helper.generateTestOrders()
-        const user = await helper.generateTestCustomer(orders);
+
+        const user = await helper.generateTestCustomer();
+        const orders = await helper.generateTestOrders(user._id)
         const token = await helper.generateTokenForCustomer();
   
         this.currentTest.token = token
         this.currentTest.user = user
         this.currentTest.orders = orders
+    
     });
 
-    it('Should create an order with a post request', function() {
-        const items = [
-            {
-                title: 'Gretas Fury',
-                price: 999,
-                shortDesc: 'Unisex',
-                longDesc: 'Skate ipsum dolor sit amet...',
-                imgFile: 'skateboard-greta.png'
-            },
-            {
-                title : "Swag",
-                price : 799,
-                shortDesc : "Unisex",
-                category : "board",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "skateboard-generic.png"
-            },
-            {
-                title : "Hoodie76",
-                price : 699,
-                shortDesc : "Ash unisex",
-                category : "clothes",
-                longDesc : "Skate ipsum dolor sit amet, 50-50 Sidewalk Surfer nose bump kickflip bruised heel fakie berm soul skate. Bluntslide transition nollie hard flip bank pressure flip ho-ho. Steps rip grip nosepicker roll-in yeah 540 pump. ",
-                imgFile : "hoodie-ash.png"
-            }
-        ]
+    it('Should create an order with a post request', async function() {
+        const items = await helper.generateTestItems()
         const orderValue = 2497
-        // await ordersModel.createOrder(items)
 
-        request(app)
+        await request(app)
         .post('/api/orders/')
         .set('Content-Type', 'application/json')
+        .set("Authorization", `Bearer ${this.test.token}`)
         .send(items)
         .then((res) => {
             expect(res).to.have.status(201)
@@ -77,13 +54,16 @@ describe("Integration test: For testing if API is RESTful", () => {
 
     it('Should get all orders with a get request', async function() {
         const res = await request(app)
-        .get('/api/orders/')
-        .set('Authorization', `Bearer ${this.test.token}`)
-        .set('Content-Type', `application/json`)
+        .get(`/api/orders/`)
+        .set('Content-Type', 'application/json')
+        .set("Authorization", `Bearer ${this.test.token}`)
         .then((res) => {
-            this.test.orders[0].toString().should.equal(res.body[0]._id)
-            this.test.orders[1].toString().should.equal(res.body[1]._id)
-
+            res.body[0].orderHistory[0].items.should.deep.equal(
+                this.test.orders.order1
+            )
+            res.body[0].orderHistory[1].items.should.deep.equal(
+                this.test.orders.order2
+            )
         })
     })     
 })
