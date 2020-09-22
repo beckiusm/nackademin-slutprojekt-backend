@@ -37,7 +37,12 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
 	const id = req.params.id;
 	const { title, price, shortDesc, longDesc, imgFile } = req.body;
+<<<<<<< HEAD
 	if (permissions.canUpdateProduct(req.user)) {
+=======
+	
+  if (permissions.canUpdateProduct(req.user)) {
+>>>>>>> 97a20ec993bb53c6e6640805391f265452659289
 		try {
 			const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
 			res.json(
