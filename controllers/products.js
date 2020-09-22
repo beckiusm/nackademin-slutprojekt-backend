@@ -38,12 +38,16 @@ exports.updateProduct = async (req, res) => {
 	const id = req.params.id;
 	const { title, price, shortDesc, longDesc, imgFile } = req.body;
 	try {
-		const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
-		res.json(
+		if (permissions.canUpdateProduct(req.user) ) {
+			const product = await productModel.updateProduct(id, title, price, shortDesc, longDesc, imgFile);
+			res.json(
 			{
 				message: `Updated product with id ${id}.`,
 				product
 			}).status(200);
+		} else {
+			res.status(403);
+		}
 	} catch (error) {
 		res.json({ error: error.message }).status(400);
 	}

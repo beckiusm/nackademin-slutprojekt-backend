@@ -40,6 +40,8 @@ module.exports = {
 	},
 
 
+	//canUpdateProduct
+
 	updateProduct: async (id, title, price, shortDesc, longDesc, imgFile) => {
 		try {
 		    const product = await Product.findByIdAndUpdate(
