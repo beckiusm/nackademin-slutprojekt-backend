@@ -89,4 +89,27 @@ describe('Users model', function() {
         updatedUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
         updatedUser.orderHistory[0].items[0].should.deep.equal(newOrder.order1[0])
     })
+    it('should get a user', async function() {
+        const userObject = {
+            email: 'Email@email.com',
+            password: this.test.password,
+            name: 'Test Smith',
+            role: 'customer',
+            adress: {
+                street: 'test street 52',
+                zip: '123456',
+                city: 'Testhattan'
+            },
+            orderHistory: []
+        }
+        const createUser = await usersModel.createNewUser(userObject);
+        const user = await usersModel.getUser(createUser._id);
+        user[0]._doc.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
+        user[0]._doc.adress.should.have.keys(['street', 'zip', 'city']);
+        user[0]._doc.adress.should.deep.equal(userObject.adress);
+        user[0]._doc.role.should.equal(userObject.role);
+        user[0]._doc.name.should.equal(userObject.name);
+        user[0]._doc.password.should.equal(userObject.password);
+        user[0]._doc.email.should.equal(userObject.email);
+    })
 });

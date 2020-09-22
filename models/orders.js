@@ -34,7 +34,7 @@ async function createOrder(id, items) {
 //get all orders that an user has created
 async function getOrders(id) { //här behöver vi lägga till en paramater, såsom id
     try {
-        const orderResponse = await usersModel.getUserHistory(id) //här behöver vi lägga till _id: id
+        const orderResponse = await usersModel.getUser(id) //här behöver vi lägga till _id: id
         return orderResponse
     } catch (error) {
         return error

@@ -64,7 +64,7 @@ module.exports = {
         }
     },
 
-    async getUserHistory (id) {
+    async getUser (id) {
         try {
             const user = await Users.find({_id: id});
             return user;
