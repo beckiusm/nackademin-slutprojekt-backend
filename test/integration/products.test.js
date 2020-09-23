@@ -47,7 +47,7 @@ describe('product integration test', function() {
 			.then((res) => {
 				res.should.have.status(201)
 				res.should.be.json
-				res.body.should.have.keys(['_id', 'title', 'price', 'shortDesc', 'longDesc', 'imgFile'])
+				res.body.product.should.have.keys(['_id', 'title', 'price', 'shortDesc', 'longDesc', 'imgFile'])
 			})
 	})
 	it('should get a product', async function () {

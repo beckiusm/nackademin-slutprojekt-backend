@@ -24,7 +24,7 @@ exports.createProduct = async (req, res) => {
 	try {
 		if (permissions.canCreateProduct(req.user) ) {
 			const product = await productModel.createProduct(req.body)
-			res.status(201).json(product)	
+			res.status(201).json({product})	
 		} else {
 			res.status(403)
 		}
