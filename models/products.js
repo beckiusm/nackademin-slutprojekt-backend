@@ -1,72 +1,65 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ProductSchema = new mongoose.Schema({
-    title: String, 
-    price: Number, 
-    shortDesc: String,
-    longDesc: String,
-    imgFile: String,
-}, {versionKey: false});
+	title: String, 
+	price: Number, 
+	shortDesc: String,
+	longDesc: String,
+	imgFile: String,
+}, {versionKey: false})
 
-const Product = mongoose.model('Product', ProductSchema);
+const Product = mongoose.model('Product', ProductSchema)
 
 module.exports = {
 	getProducts: async () => {
 		try {
-            const products = await Product.find({}).lean();
-            return products;
+			const products = await Product.find({}).lean()
+			return products
 		} catch (error) {
-			return(error);
+			return(error)
 		}
 	},
 
 	getProduct: async (id) => {
 		try {
-			return await Product.findOne({_id: id});
+			return await Product.findOne({_id: id})
 		} catch (error) {
-			return (error);
+			return (error)
 		}
 	},
 
-	createProduct: async (title, price, shortDesc, longDesc, imgFile) => {
+	createProduct: async (productObject) => {
 		try {
-			const product = await Product.create({
-                title, price, shortDesc: shortDesc, longDesc, imgFile
-			});
-			return product._doc;
+			const product = await Product.create(productObject)
+			return product._doc
 		} catch (error) {
-			return (error);
+			return (error)
 		}
 	},
 
-
-	//canUpdateProduct
-
-	updateProduct: async (id, title, price, shortDesc, longDesc, imgFile) => {
+	updateProduct: async (id, productObject) => {
 		try {
-		    const product = await Product.findByIdAndUpdate(
+			const product = await Product.findByIdAndUpdate(
 				id, 
-				{
-                    title, price, shortDesc, longDesc, imgFile
-				}, 
+				productObject, 
 				{new: true}
-			);
-            return product;
+			)
+			return product._doc
 		} catch (error) {
-			return (error);
+			return (error)
 		}
 	},
 
 	deleteProduct: async (id) => {
 		try {
-            const product = await Product.deleteOne({_id: id})
-            return product.deletedCount;
+			const product = await Product.deleteOne({_id: id})
+			return product.deletedCount
 		} catch (error) {
-			return (error);
+			return (error)
 		}
 	},
 
 	clear: async () => {
-		return await Product.deleteMany({});
+		return await Product.deleteMany({})
 	},
-};
+}
