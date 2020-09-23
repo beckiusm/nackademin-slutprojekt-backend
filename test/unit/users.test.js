@@ -104,12 +104,12 @@ describe('Users model', function() {
         }
         const createUser = await usersModel.createNewUser(userObject);
         const user = await usersModel.getUser(createUser._id);
-        user[0]._doc.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
-        user[0]._doc.adress.should.have.keys(['street', 'zip', 'city']);
-        user[0]._doc.adress.should.deep.equal(userObject.adress);
-        user[0]._doc.role.should.equal(userObject.role);
-        user[0]._doc.name.should.equal(userObject.name);
-        user[0]._doc.password.should.equal(userObject.password);
-        user[0]._doc.email.should.equal(userObject.email);
+        user._doc.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
+        user._doc.adress.should.have.keys(['street', 'zip', 'city']);
+        user._doc.adress.should.deep.equal(userObject.adress);
+        user._doc.role.should.equal(userObject.role);
+        user._doc.name.should.equal(userObject.name);
+        user._doc.password.should.equal(userObject.password);
+        user._doc.email.should.equal(userObject.email);
     })
 });

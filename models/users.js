@@ -66,7 +66,8 @@ module.exports = {
 
     async getUser (id) {
         try {
-            const user = await Users.find({_id: id});
+            const user = await Users.findOne({_id: id});
+            delete user.password;
             return user;
         } catch (error) {
             return error
