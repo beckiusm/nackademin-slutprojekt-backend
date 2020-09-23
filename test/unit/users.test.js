@@ -4,6 +4,7 @@ const bcryptjs = require('bcryptjs');
 const chai = require('chai');
 const { expect } = require('chai');
 const helper = require('../helper');
+const auth = require('../../middleware/auth.js');
 
 chai.should();
 
@@ -46,7 +47,7 @@ describe('Users model', function() {
     });
 
 
-    it('find a user and return a signed token', async function() {
+    it('find a user and return a signed token and user object', async function() {
         const userFields = {
             email: 'Email@email.com',
             password: '123',
@@ -65,12 +66,14 @@ describe('Users model', function() {
         }
         const authUser = await usersModel.authUser(loginAttempt)
 
-        authUser.should.be.an('object')
-        authUser.token.should.be.a('string')
-        authUser.user.should.be.an('object')
+        authUser.should.be.an('object');
+        authUser.token.should.be.a('string');
+        authUser.user.should.have.keys(['_id', 'email', 'name', 'adress', 'role', 'orderHistory']);
+        console.log(authUser.user);
+        authUser.user.adress.have.keys(['street', 'city', 'zip']);
     })
 
-    it('update a user', async function() {
+    it('update a user with two orders', async function() {
         // Arrange
         const userObject = {
             email: 'Email@email.com',
@@ -85,10 +88,12 @@ describe('Users model', function() {
         const createUser = await usersModel.createNewUser(userObject);
         const newOrder = await helper.generateTestOrders(createUser._id, 'customer');
         // Act
-        updatedUser = await usersModel.updateUser(createUser._id, newOrder);
-        updatedUser.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
-        updatedUser.orderHistory[0].items[0].should.deep.equal(newOrder.order1.items[0])
-    })
+        let updatedUserOrderHistory = await usersModel.updateUserOrderHistory(createUser._id, newOrder);
+        updatedUserOrderHistory.should.be.an('array')
+        updatedUserOrderHistory[0].should.have.keys(['items', '_id', 'orderValue', 'status', 'timeStamp']);
+        updatedUserOrderHistory[0].items[0].should.deep.equal(newOrder.order1.items[0])
+    });
+
     it('should get a user', async function() {
         const userObject = {
             email: 'Email@email.com',

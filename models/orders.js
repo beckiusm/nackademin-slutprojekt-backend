@@ -46,7 +46,7 @@ async function createOrderForCustomer(id, products) {
             items: products,
             orderValue: orderValue
         });
-        await usersModel.updateUser(id, newOrder);
+        await usersModel.updateUserOrderHistory(id, newOrder);
         return newOrder._doc
     } catch (error) {
         return error

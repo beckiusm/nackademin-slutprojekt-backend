@@ -50,7 +50,7 @@ module.exports = {
 
     },
 
-    async updateUser (id, orders) {
+    async updateUserOrderHistory (id, orders) {
         try {
             const user = await Users.findByIdAndUpdate(
                 id, 
@@ -58,7 +58,8 @@ module.exports = {
                     $push: { orderHistory: orders }
                 }
             );
-            return user._doc;
+            delete user.password;
+            return user.orderHistory;
         } catch (error) {
             return (error);
 
