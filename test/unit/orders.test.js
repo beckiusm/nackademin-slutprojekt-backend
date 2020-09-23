@@ -43,10 +43,10 @@ describe("Unit test: ordersmodel", () => {
         const orderValue = 1798
 
         const resAllOrders = await ordersModel.getOrders(this.test.user._id)
-        JSON.stringify(resAllOrders[0].orderHistory[0].items[0]).should.deep.equal(
+        JSON.stringify(resAllOrders[0].items[0]).should.deep.equal(
             JSON.stringify(this.test.orders.order1.items[0])
         )
-        JSON.stringify(resAllOrders[0].orderHistory[1].items[0]).should.deep.equal(
+        JSON.stringify(resAllOrders[1].items[0]).should.deep.equal(
             JSON.stringify(this.test.orders.order2.items[0])
         )
     })
