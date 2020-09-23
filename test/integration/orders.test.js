@@ -41,10 +41,9 @@ describe('Integration test: For testing if API is RESTful', function() {
 			.set('Authorization', `Bearer ${this.test.token}`)
 			.send(items)
 			.then((res) => {
-
 				res.should.have.status(201)
-				res.body.items[0].toString().should.deep.equal(
-					items.toString()
+				res.body.items.toString().should.deep.equal(
+					items.items.toString()
 				)
 			})
 	})
@@ -58,7 +57,7 @@ describe('Integration test: For testing if API is RESTful', function() {
 			.send(items)
 			.then((res) => {
 				expect(res).to.have.status(201)
-				res.body.items[0].toString().should.deep.equal(
+				res.body.items.toString().should.deep.equal(
 					items.toString()
 				)
 			})
@@ -70,11 +69,11 @@ describe('Integration test: For testing if API is RESTful', function() {
 			.set('Content-Type', 'application/json')
 			.set('Authorization', `Bearer ${this.test.token}`)
 			.then((res) => {
-				res.body[0].items[0].toString().should.deep.equal(
-					this.test.orders.order1.items[0].toString()
+				res.body[0].items.toString().should.deep.equal(
+					this.test.orders.order1.items.toString()
 				)
-				res.body[1].items[0].toString().should.deep.equal(
-					this.test.orders.order2.items[0].toString()
+				res.body[1].items.toString().should.deep.equal(
+					this.test.orders.order2.items.toString()
 				)
 			})
 	})     

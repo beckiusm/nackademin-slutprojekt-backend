@@ -43,7 +43,7 @@ async function createOrderForCustomer(id, products) {
 		const newOrder = await Order.create({
 			timeStamp: Date.now(),
 			status: 'inProcess',
-			items: products,
+			items: products.items,
 			orderValue: orderValue
 		})
 		await usersModel.updateUserOrderHistory(id, newOrder)

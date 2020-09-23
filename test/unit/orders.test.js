@@ -28,8 +28,8 @@ describe('Unit test: ordersmodel', function() {
 	it('Should create an order', async function() {
 		const items = await helper.generateTestItems()
 		const resOrder = await ordersModel.createOrderForCustomer(this.test.user._id, items)
-		resOrder.items[0].toString().should.deep.equal(
-			items.toString()
+		resOrder.items.toString().should.deep.equal(
+			items.items.toString()
 		)
 	})
 
