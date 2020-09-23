@@ -73,10 +73,10 @@ describe("Integration test: For testing if API is RESTful", () => {
         .set('Content-Type', 'application/json')
         .set("Authorization", `Bearer ${this.test.token}`)
         .then((res) => {
-            JSON.stringify(res.body[0].orderHistory[0].items[0]).should.deep.equal(
+            JSON.stringify(res.body[0].items[0]).should.deep.equal(
                 JSON.stringify(this.test.orders.order1.items[0])
             )
-            JSON.stringify(res.body[0].orderHistory[1].items[0]).should.deep.equal(
+            JSON.stringify(res.body[1].items[0]).should.deep.equal(
                 JSON.stringify(this.test.orders.order2.items[0])
             )
         })
