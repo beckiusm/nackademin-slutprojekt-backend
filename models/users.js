@@ -58,7 +58,6 @@ module.exports = {
                     $push: { orderHistory: orders }
                 }
             );
-            delete user.password;
             return user.orderHistory;
         } catch (error) {
             return (error);
@@ -66,11 +65,10 @@ module.exports = {
         }
     },
 
-    async getUser (id) {
+    async getUserorderHistory (id) {
         try {
             const user = await Users.findOne({_id: id});
-            delete user.password;
-            return user;
+            return user.orderHistory;
         } catch (error) {
             return error
         }

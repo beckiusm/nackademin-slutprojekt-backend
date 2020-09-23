@@ -69,8 +69,7 @@ describe('Users model', function() {
         authUser.should.be.an('object');
         authUser.token.should.be.a('string');
         authUser.user.should.have.keys(['_id', 'email', 'name', 'adress', 'role', 'orderHistory']);
-        console.log(authUser.user);
-        authUser.user.adress.have.keys(['street', 'city', 'zip']);
+        authUser.user.adress.should.have.keys(['street', 'city', 'zip']);
     })
 
     it('update a user with two orders', async function() {
@@ -94,7 +93,7 @@ describe('Users model', function() {
         updatedUserOrderHistory[0].items[0].should.deep.equal(newOrder.order1.items[0])
     });
 
-    it('should get a user', async function() {
+    it('should get a users order history', async function() {
         const userObject = {
             email: 'Email@email.com',
             password: this.test.password,
@@ -108,13 +107,7 @@ describe('Users model', function() {
             orderHistory: []
         }
         const createUser = await usersModel.createNewUser(userObject);
-        const user = await usersModel.getUser(createUser._id);
-        user._doc.should.to.have.keys([ 'email', 'password', 'role', 'name', 'adress', 'orderHistory', '_id' ]);
-        user._doc.adress.should.have.keys(['street', 'zip', 'city']);
-        user._doc.adress.should.deep.equal(userObject.adress);
-        user._doc.role.should.equal(userObject.role);
-        user._doc.name.should.equal(userObject.name);
-        user._doc.password.should.equal(userObject.password);
-        user._doc.email.should.equal(userObject.email);
+        const orderHistory = await usersModel.getUserorderHistory(createUser._id);
+        orderHistory.should.be.an('array').with.length(0)
     })
 });
