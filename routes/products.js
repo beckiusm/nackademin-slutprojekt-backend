@@ -3,19 +3,19 @@ const router = express.Router()
 const productController = require('../controllers/products')
 const auth = require('../middleware/auth.js')
 
-// get list
+// get product
 router.get('/:id', productController.getProduct)
 
-// get lists
+// get products
 router.get('/', productController.getProducts)
 
-// create list
+// create product
 router.post('/', auth.user, productController.createProduct)
 
-// update list
+// update product
 router.patch('/:id', auth.user, productController.updateProduct)
 
-// delete list
+// delete product
 router.delete('/:id', auth.user, productController.deleteProduct)
 
 module.exports = router
