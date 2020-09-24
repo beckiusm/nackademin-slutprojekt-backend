@@ -59,6 +59,7 @@ describe('product integration test', function() {
 				res.should.have.status(200)
 				res.should.be.json
 				res.body.should.have.keys(['_id', 'title', 'price', 'shortDesc', 'longDesc', 'imgFile'])
+				res.body.toString().should.deep.equal(product.toString())
 			})
 	})
 	it('should update product', async function () {
@@ -68,12 +69,13 @@ describe('product integration test', function() {
 			.patch(`/api/products/${product._id}`)
 			.set('Authorization', 'Bearer ' + this.test.token)
 			.set('Content-Type', 'application/json')
-			.set('Authorization', 'Bearer ' + this.test.token)
 			.send(fields)
 			.then((res) => {
+
 				res.should.have.status(200)
 				res.should.be.json
 				res.body.product.should.have.keys(['_id', 'title', 'price', 'shortDesc', 'longDesc', 'imgFile'])
+				res.body.product.toString().should.deep.equal(product.toString())
 			})
 	})
 	it('should delete product', async function () {
@@ -86,6 +88,7 @@ describe('product integration test', function() {
 				res.should.have.status(200)
 				res.should.be.json
 				res.body.should.have.keys(['message'])
+				res.body.message.should.equal(`Deleted 1 product with id ${product._id}.`)
 			})
 	})
 })
